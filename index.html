@@ -3,51 +3,63 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
   :root{
-    --bg:#f1efec;
+    /* PERTiX brand tokens — sampled from pertix.ru production CSS */
+    --bg:#f3f4f9;
     --surface:#ffffff;
-    --surface-2:#f6f3f1;
-    --ink:#111111;
-    --muted:#6b6b6b;
-    --line:#e7e1dd;
+    --accent-light:#fff0f4;
+    --ink:#181924;
+    --muted:#5f6473;
+    --line:#e3e7f0;
     --accent:#ff0037;
     --accent-ink:#ffffff;
-    --good:#1f8a4c; --good-bg:#e5f4ea;
-    --warn:#b8790a; --warn-bg:#faf1dc;
-    --bad:#ff0037;  --bad-bg:#ffe3e8;
+    --blue:#1f51ff;
+    --blue-light:#ecf0ff;
+    --dark:#1f1f1f;
+    --good:#1f8a4c; --good-bg:#e6f5ea;
+    --warn:#b8790a; --warn-bg:#fff8e8;
+    --bad:#ff0037;  --bad-bg:#fff0f4;
     --gold:#e8a63c;
-    --shadow: 0 1px 2px rgba(17,17,17,.05), 0 10px 24px -14px rgba(17,17,17,.18);
+    --radius-lg:22px;
+    --radius-md:18px;
+    --shadow: 0 18px 50px rgba(16,24,80,.09);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#0c0c0c;
-      --surface:#161616;
-      --surface-2:#1d1d1d;
-      --ink:#f4f4f4;
-      --muted:#9d9d9d;
-      --line:#2b2b2b;
-      --accent:#ff2547;
+      --bg:#141414;
+      --surface:#1f1f1f;
+      --accent-light:rgba(255,0,55,.16);
+      --ink:#f4f4f5;
+      --muted:#9a9aa5;
+      --line:#333336;
+      --accent:#ff0037;
       --accent-ink:#ffffff;
+      --blue:#5578ff;
+      --blue-light:rgba(31,81,255,.18);
+      --dark:#0d0d0d;
       --good:#3fce82; --good-bg:rgba(63,206,130,.15);
       --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-      --bad:#ff2547;  --bad-bg:rgba(255,37,71,.16);
+      --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
       --gold:#f0b954;
-      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -14px rgba(0,0,0,.6);
+      --shadow: 0 18px 50px rgba(0,0,0,.5);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0c0c0c;
-    --surface:#161616;
-    --surface-2:#1d1d1d;
-    --ink:#f4f4f4;
-    --muted:#9d9d9d;
-    --line:#2b2b2b;
-    --accent:#ff2547;
+    --bg:#141414;
+    --surface:#1f1f1f;
+    --accent-light:rgba(255,0,55,.16);
+    --ink:#f4f4f5;
+    --muted:#9a9aa5;
+    --line:#333336;
+    --accent:#ff0037;
     --accent-ink:#ffffff;
+    --blue:#5578ff;
+    --blue-light:rgba(31,81,255,.18);
+    --dark:#0d0d0d;
     --good:#3fce82; --good-bg:rgba(63,206,130,.15);
     --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-    --bad:#ff2547;  --bad-bg:rgba(255,37,71,.16);
+    --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
     --gold:#f0b954;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 24px -14px rgba(0,0,0,.6);
+    --shadow: 0 18px 50px rgba(0,0,0,.5);
   }
 
   *{box-sizing:border-box;}
@@ -108,12 +120,11 @@
   .month-badge{
     font-size:12px;
     font-weight:700;
-    letter-spacing:.04em;
+    letter-spacing:.05em;
     text-transform:uppercase;
-    color:var(--accent);
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    padding:5px 10px;
+    color:#fff;
+    background:radial-gradient(circle at 100% 0, rgba(255,0,55,.4), transparent 45%), var(--blue);
+    padding:7px 13px;
     border-radius:999px;
   }
   .updated{
@@ -143,7 +154,7 @@
   .dept-card{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:var(--radius-lg);
     padding:20px 22px 8px;
     box-shadow:var(--shadow);
   }
@@ -294,7 +305,7 @@
   .stat-card{
     background:var(--surface);
     border:1px solid var(--line);
-    border-radius:16px;
+    border-radius:var(--radius-lg);
     padding:20px 22px;
     box-shadow:var(--shadow);
     display:flex;
@@ -303,14 +314,14 @@
   }
   .stat-icon{
     flex:none;
-    width:54px;height:54px;
-    border-radius:12px;
-    background:var(--surface-2);
-    border:1px solid var(--line);
+    width:56px;height:56px;
+    border-radius:16px;
+    background:var(--accent-light);
     display:flex;align-items:center;justify-content:center;
     color:var(--accent);
   }
   .stat-icon svg{width:30px;height:30px;}
+  .stat-icon.illustrated{ background:var(--blue-light); }
   .stat-card.warn-tile .stat-icon{color:var(--bad);}
   .stat-label{
     font-size:12.5px;
@@ -362,15 +373,20 @@
 
   <div class="stats">
     <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 48 48" fill="none">
-          <rect x="4" y="30" width="13" height="10" rx="1" fill="currentColor"/>
-          <rect x="18" y="24" width="13" height="16" rx="1" fill="currentColor" opacity=".55"/>
-          <path d="M33 40V19a2 2 0 0 1 2-2h2.4a2 2 0 0 1 1.7.95L43 25v15" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
-          <rect x="33" y="19" width="10" height="9" rx="1" stroke="currentColor" stroke-width="2.2"/>
-          <circle cx="38" cy="41" r="2.6" fill="currentColor"/>
-          <circle cx="12" cy="41" r="2.6" fill="currentColor"/>
-          <path d="M9 41h1M35 41h1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      <div class="stat-icon illustrated">
+        <svg viewBox="0 0 64 48" width="34" height="26">
+          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#c9975a"/>
+          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#000" opacity=".06"/>
+          <path d="M35.5 17.5v8M31 21.5h9" stroke="#8a6338" stroke-width="1.3"/>
+          <path d="M39 18l2.4 2.6-4.8 0Z" fill="#8a6338"/>
+          <rect x="30" y="29" width="26" height="4.5" rx="1" fill="#f5a623"/>
+          <path d="M10 12 L30 25" stroke="#3a3a3a" stroke-width="3" stroke-linecap="round"/>
+          <rect x="27" y="24" width="5" height="9" rx="1.4" fill="#e8901a"/>
+          <circle cx="8" cy="10" r="2.6" fill="#3a3a3a"/>
+          <circle cx="34" cy="41" r="4" fill="#232323"/>
+          <circle cx="34" cy="41" r="1.6" fill="#5a5a5a"/>
+          <circle cx="54" cy="41" r="4" fill="#232323"/>
+          <circle cx="54" cy="41" r="1.6" fill="#5a5a5a"/>
         </svg>
       </div>
       <div>
@@ -403,7 +419,7 @@
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-09-04T14:01:38.146524+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-03T13:52:18+03:00"};
+  const DATA = {"updatedAt": "2026-09-04T14:14:19.390591+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-03T13:52:18+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
