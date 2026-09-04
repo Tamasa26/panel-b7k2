@@ -1,9 +1,3 @@
-# Contains the Bitrix24 webhook URL — must never be public.
-build_dashboard.py
-dashboard_template.html
-
-# Build/dev artifacts
 __pycache__/
 venv/
 *.xlsx
-dashboard.html
