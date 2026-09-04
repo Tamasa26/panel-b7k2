@@ -473,4 +473,12 @@
 
   render(DATA);
   setInterval(() => render(DATA), 60000);
+
+  // The page itself is a static file — an open tab never sees a new
+  // publish on its own. Reload from the network every 5 minutes (with a
+  // cache-busting query so a CDN/browser cache can't serve the old file)
+  // so a screen left open all day picks up each hourly update.
+  setInterval(() => {
+    window.location.href = window.location.pathname + '?t=' + Date.now();
+  }, 5 * 60 * 1000);
 </script>
