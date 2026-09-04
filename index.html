@@ -391,7 +391,7 @@
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-09-04T15:01:25.783951+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T15:00:02+03:00"};
+  const DATA = {"updatedAt": "2026-09-04T16:20:05.139666+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T15:00:02+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
@@ -410,12 +410,15 @@
 
   const moneyBagSVG = `
     <svg class="money-bag" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M9.3 8.6C7.1 10.3 5.5 12.9 5.5 15.4 5.5 18.8 8.3 21 12 21s6.5-2.2 6.5-5.6c0-2.5-1.6-5.1-3.8-6.8" fill="#a9764f" stroke="#7a5334" stroke-width=".7" stroke-linejoin="round"/>
-      <path d="M9.4 8.7C9.1 6.6 10.3 5 12 5s2.9 1.6 2.6 3.7" fill="none" stroke="#7a5334" stroke-width="1.3" stroke-linecap="round"/>
-      <circle cx="9.3" cy="7.2" r="1.5" fill="var(--gold)" stroke="#c9861f" stroke-width=".4"/>
-      <circle cx="12.2" cy="5.9" r="1.8" fill="var(--gold)" stroke="#c9861f" stroke-width=".4"/>
-      <circle cx="15" cy="7.4" r="1.4" fill="var(--gold)" stroke="#c9861f" stroke-width=".4"/>
-      <path d="M9 14.5c.7.6 1.8 1 3 1s2.3-.4 3-1" fill="none" stroke="#7a5334" stroke-width=".8" stroke-linecap="round" opacity=".55"/>
+      <g transform="rotate(-18 12 12)">
+        <rect x="6.3" y="3.5" width="10.4" height="15.5" rx="1.6" fill="#8fcf7e" stroke="#3f7a34" stroke-width=".6"/>
+        <circle cx="11.5" cy="11.2" r="3" fill="none" stroke="#3f7a34" stroke-width=".6" opacity=".8"/>
+        <circle cx="8.4" cy="5.6" r=".55" fill="#3f7a34"/>
+        <circle cx="8.4" cy="16.9" r=".55" fill="#3f7a34"/>
+      </g>
+      <ellipse cx="6.3" cy="18.4" rx="2.7" ry="2.2" fill="var(--gold)" stroke="#c9861f" stroke-width=".5"/>
+      <ellipse cx="18.4" cy="15.6" rx="2.6" ry="2.1" fill="var(--gold)" stroke="#c9861f" stroke-width=".5"/>
+      <ellipse cx="15.6" cy="4.4" rx="2" ry="1.7" fill="var(--gold)" stroke="#c9861f" stroke-width=".5" transform="rotate(-24 15.6 4.4)"/>
     </svg>`;
 
   function renderDept(dept){
@@ -476,7 +479,7 @@
   // fresh publish. If this load didn't already come from our own
   // cache-busted reload (no "?t=" param), immediately replace it with
   // one that has a unique query string, forcing a real network fetch.
-  if (!location.search.includes('t=')) {
+  if (location.protocol.startsWith('http') && !location.search.includes('t=')) {
     location.replace(location.pathname + '?t=' + Date.now());
   }
 
