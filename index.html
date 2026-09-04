@@ -391,7 +391,7 @@
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-09-04T14:40:56.472089+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 136689903, "pct": 196.5}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T14:35:06+03:00"};
+  const DATA = {"updatedAt": "2026-09-04T14:49:26.817553+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 28565098, "pct": 63.5}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34307528, "pct": 105.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 136689903, "pct": 196.5}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T14:44:08+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
@@ -469,6 +469,15 @@
 
     const staleMs = Date.now() - updatedAt.getTime();
     document.getElementById('updated').classList.toggle('stale', staleMs > 90*60*1000);
+  }
+
+  // GitHub Pages serves this file with a 10-minute CDN cache. A plain
+  // visit/bookmark can land on a stale cached copy even right after a
+  // fresh publish. If this load didn't already come from our own
+  // cache-busted reload (no "?t=" param), immediately replace it with
+  // one that has a unique query string, forcing a real network fetch.
+  if (!location.search.includes('t=')) {
+    location.replace(location.pathname + '?t=' + Date.now());
   }
 
   render(DATA);

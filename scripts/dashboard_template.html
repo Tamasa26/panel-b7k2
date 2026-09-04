@@ -471,6 +471,15 @@
     document.getElementById('updated').classList.toggle('stale', staleMs > 90*60*1000);
   }
 
+  // GitHub Pages serves this file with a 10-minute CDN cache. A plain
+  // visit/bookmark can land on a stale cached copy even right after a
+  // fresh publish. If this load didn't already come from our own
+  // cache-busted reload (no "?t=" param), immediately replace it with
+  // one that has a unique query string, forcing a real network fetch.
+  if (!location.search.includes('t=')) {
+    location.replace(location.pathname + '?t=' + Date.now());
+  }
+
   render(DATA);
   setInterval(() => render(DATA), 60000);
 
