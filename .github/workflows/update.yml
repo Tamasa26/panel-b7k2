@@ -2,7 +2,10 @@ name: Update dashboard
 
 on:
   schedule:
-    - cron: "5,35 * * * *"
+    # GitHub Actions cron always runs in UTC, with no timezone setting.
+    # Moscow is UTC+3 year-round (no DST), so 08:00-19:00 MSK, Mon-Fri
+    # is 05:00-16:00 UTC, Mon-Fri here.
+    - cron: "5,35 5-16 * * 1-5"
   workflow_dispatch: {}
 
 permissions:
