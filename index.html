@@ -262,17 +262,45 @@
   }
 
   /* ---- stat tiles ---- */
+  .stats-row{
+    display:flex;
+    align-items:stretch;
+    gap:18px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
   .stats{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
     gap:20px;
-    margin-bottom:22px;
+    flex:1 1 520px;
   }
   @media (max-width:920px){
     .stats{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:560px){
     .stats{grid-template-columns:1fr;}
+  }
+  .noodle-scene{
+    flex:0 0 auto;
+    width:104px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:2px;
+  }
+  .noodle-scene svg{ width:100%; height:auto; overflow:visible; }
+  .steam-wisp{ animation:steam-rise 2.6s ease-in-out infinite; transform-origin:50% 100%; }
+  .steam-wisp.s2{ animation-delay:.5s; }
+  .steam-wisp.s3{ animation-delay:1s; }
+  @keyframes steam-rise{
+    0%   { opacity:0; transform:translateY(2px) scaleY(.85); }
+    35%  { opacity:.7; }
+    75%  { opacity:.35; }
+    100% { opacity:0; transform:translateY(-6px) scaleY(1.1); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .steam-wisp{ animation:none; opacity:.5; }
   }
   .stat-card{
     background:var(--surface);
@@ -343,6 +371,7 @@
 
   <div class="depts" id="depts"></div>
 
+  <div class="stats-row">
   <div class="stats">
     <div class="stat-card">
       <div class="stat-icon illustrated">
@@ -387,11 +416,36 @@
     </div>
   </div>
 
+  <div class="noodle-scene" aria-hidden="true">
+    <svg viewBox="0 0 100 90">
+      <rect x="40" y="62" width="55" height="4" rx="1" fill="#caa06a"/>
+      <rect x="63" y="66" width="4" height="18" fill="#a97f4f"/>
+      <path class="steam-wisp" d="M62 50q-2-4 0-8t0-8" stroke="#c7c7c7" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path class="steam-wisp s2" d="M68 49q2-4 0-8t0-8" stroke="#c7c7c7" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+      <path class="steam-wisp s3" d="M74 50q-2-4 0-8t0-8" stroke="#c7c7c7" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/>
+      <ellipse cx="68" cy="58.5" rx="15" ry="5.5" fill="#333"/>
+      <path d="M55 58q6-4 13-4t13 4" fill="none" stroke="#555" stroke-width="1"/>
+      <path d="M56.5 57.3q3-2.6 6 0t6 0t6 0t6 0" stroke="#e8c76a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M58 59q3-2.2 6 0t6 0t6 0" stroke="#d9ae4d" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".85"/>
+      <path d="M74 42q-8 4-11 11" stroke="#161616" stroke-width="5" stroke-linecap="round" fill="none"/>
+      <circle cx="62.5" cy="54" r="2.3" fill="#e8b989"/>
+      <path d="M62.5 54 57 59.5M64.5 53 59.5 58.5" stroke="#8a6338" stroke-width="1" stroke-linecap="round"/>
+      <rect x="72" y="34" width="20" height="30" rx="7" fill="#161616" transform="rotate(9 82 49)"/>
+      <rect x="85.4" y="34.5" width="2.1" height="11" fill="#0c0c0c" transform="rotate(9 86.4 40)"/>
+      <circle cx="88.5" cy="27.5" r="8.6" fill="#e3ac83"/>
+      <path d="M79.9 24.6c.4-4.7 4.2-8.1 8.6-8.1 4.5 0 8.1 3.2 8.6 7.4-2.1-1.9-5-3-8.6-3-3.3 0-6.4.9-8.6 3.7Z" fill="#181818"/>
+      <circle cx="86.3" cy="33.4" r=".55" fill="#3a2b22"/>
+      <circle cx="88.6" cy="34.6" r=".55" fill="#3a2b22"/>
+      <circle cx="91" cy="33.9" r=".55" fill="#3a2b22"/>
+    </svg>
+  </div>
+  </div>
+
   <footer>Битрикс24 «План-факт (2026)» · Google Таблица «Производство» — обновляется автоматически раз в час</footer>
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-09-04T16:50:32.499874+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 29213862, "pct": 64.9}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34555312, "pct": 105.8}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 445}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T16:23:16+03:00"};
+  const DATA = {"updatedAt": "2026-09-04T16:54:55.369652+03:00", "currentMonth": "Сентябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Кочураев", "plan": 45000000, "fact": 29213862, "pct": 64.9}, {"name": "Угольников", "plan": 45000000, "fact": 43652233, "pct": 97.0}, {"name": "Филаретова", "plan": 32655000, "fact": 34555312, "pct": 105.8}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 69575000, "fact": 25689903, "pct": 36.9}, {"name": "Роганин", "plan": 58000000, "fact": 10941042, "pct": 18.9}, {"name": "Маркова", "plan": 58000000, "fact": 47422784, "pct": 81.8}, {"name": "Малашкин", "plan": 58000000, "fact": 67884617, "pct": 117.0}, {"name": "Извекова", "plan": 24900000, "fact": 25792448, "pct": 103.6}, {"name": "Ерицян", "plan": 24900000, "fact": 11012650, "pct": 44.2}]}], "shipments": {"count": 453}, "lateShipments": {"count": 55}, "production": {"count": 43, "sum": 58483277}, "sourceUpdatedAt": "2026-09-04T16:23:16+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
