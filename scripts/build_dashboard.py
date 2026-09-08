@@ -54,6 +54,11 @@ PROD_SHEET_ID = "1AlcRl0byrg1HSVDhboZ150FvOi-hVd3wEpIwFqWgRZQ"
 PROD_GID = "614419876"
 PROD_DATA_START_ROW = 19  # 1-indexed row where the per-date shipment table begins
 
+# ---- Google Sheets (Регулярный менеджмент / lead-gen) --------------------
+
+LEADGEN_SHEET_ID = "1J7wM6L86ns3B64QGmi0wvMWLHiKDJXSIHdT0CG0Exs0"
+LEADGEN_GID = "1680454720"  # "Сентябрь" tab — update this gid when a new month's tab replaces it
+
 
 def http_get_json(url):
     with urllib.request.urlopen(url, timeout=30) as r:
@@ -168,12 +173,42 @@ def fetch_production():
     }
 
 
+def fetch_leadgen():
+    url = f"https://docs.google.com/spreadsheets/d/{LEADGEN_SHEET_ID}/export?format=csv&gid={LEADGEN_GID}"
+    raw = http_get_bytes(url).decode("utf-8")
+    rows = list(csv.reader(io.StringIO(raw)))
+
+    def first_match(label):
+        for r in rows:
+            joined = " ".join(r[:4])
+            if label in joined and len(r) > 6:
+                return r[6].strip()
+        return None
+
+    total_raw = first_match("Общее кол-во входящих обращений")
+    conv_raw = first_match("Конверсия вход/квал лид")
+
+    conv_pct = 0.0
+    if conv_raw:
+        cleaned = conv_raw.replace("%", "").replace(",", ".").strip()
+        try:
+            conv_pct = float(cleaned)
+        except ValueError:
+            conv_pct = 0.0
+
+    return {
+        "totalInquiries": int(num(total_raw)) if total_raw else 0,
+        "conversionPct": round(conv_pct, 1),
+    }
+
+
 def build_data():
     moscow_now = datetime.now(timezone(timedelta(hours=3)))
     current_month_index = moscow_now.month - 1
 
     plan_fact, bitrix_updated = fetch_bitrix_plan_fact(current_month_index)
     prod = fetch_production()
+    leadgen = fetch_leadgen()
 
     return {
         "updatedAt": moscow_now.isoformat(),
@@ -185,6 +220,7 @@ def build_data():
         "shipments": prod["shipments"],
         "lateShipments": prod["lateShipments"],
         "production": prod["production"],
+        "leadGen": leadgen,
         "sourceUpdatedAt": bitrix_updated,
     }
 
