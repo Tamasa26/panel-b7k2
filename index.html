@@ -446,7 +446,7 @@
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-10-05T15:37:17.834044+03:00", "currentMonth": "Октябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 51500000, "fact": 52517640, "pct": 102.0}, {"name": "Филаретова", "plan": 37655000, "fact": 42018090, "pct": 111.6}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 75325000, "fact": 44223756, "pct": 58.7}, {"name": "Роганин", "plan": 67000000, "fact": 12535743, "pct": 18.7}, {"name": "Маркова", "plan": 67000000, "fact": 47885199, "pct": 71.5}, {"name": "Малашкин", "plan": 67000000, "fact": 79908930, "pct": 119.3}, {"name": "Извекова", "plan": 28500000, "fact": 36971273, "pct": 129.7}, {"name": "Ерицян", "plan": 28500000, "fact": 11372023, "pct": 39.9}]}], "shipments": {"count": 568}, "lateShipments": {"count": 60}, "production": {"count": 35, "sum": 43851972}, "leadGen": {"totalInquiries": 710, "conversionPct": 38.3}, "sourceUpdatedAt": "2026-10-05T15:27:10+03:00"};
+  const DATA = {"updatedAt": "2026-10-05T15:43:09.231472+03:00", "currentMonth": "Октябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 51500000, "fact": 52517640, "pct": 102.0}, {"name": "Филаретова", "plan": 37655000, "fact": 42018090, "pct": 111.6}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 75325000, "fact": 44223756, "pct": 58.7}, {"name": "Роганин", "plan": 67000000, "fact": 12535743, "pct": 18.7}, {"name": "Маркова", "plan": 67000000, "fact": 47885199, "pct": 71.5}, {"name": "Малашкин", "plan": 67000000, "fact": 79908930, "pct": 119.3}, {"name": "Извекова", "plan": 28500000, "fact": 36971273, "pct": 129.7}, {"name": "Ерицян", "plan": 28500000, "fact": 11372023, "pct": 39.9}]}], "shipments": {"count": 568}, "lateShipments": {"count": 60}, "production": {"count": 35, "sum": 43851972}, "leadGen": {"totalInquiries": 65, "conversionPct": 33.9, "month": "Октябрь"}, "sourceUpdatedAt": "2026-10-05T15:27:10+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
@@ -535,6 +535,12 @@
       </div>`;
   }
 
+  const MONTH_SHORT = {
+    'Январь':'янв', 'Февраль':'февр', 'Март':'март', 'Апрель':'апр',
+    'Май':'май', 'Июнь':'июнь', 'Июль':'июль', 'Август':'авг',
+    'Сентябрь':'сент', 'Октябрь':'окт', 'Ноябрь':'нояб', 'Декабрь':'дек'
+  };
+
   function renderMiniStats(data){
     const lg = data.leadGen || {totalInquiries: 0, conversionPct: 0};
     return `
@@ -548,7 +554,7 @@
               <path d="M13 11.3v-3.2l1.5-2.1c.25-.35.8-.25.9.15l.15.85h1.6c.55 0 .95.5.8 1.05l-.5 2.05a.9.9 0 0 1-.85.65H13Z" fill="currentColor" stroke="none"/>
             </svg>
           </div>
-          <p class="stat-label">Всего обращений (сент)</p>
+          <p class="stat-label">Всего обращений${lg.month && MONTH_SHORT[lg.month] ? ' (' + MONTH_SHORT[lg.month] + ')' : ''}</p>
           <div class="stat-number num">${fmtInt(lg.totalInquiries)}</div>
         </div>
         <div class="mini-stat">

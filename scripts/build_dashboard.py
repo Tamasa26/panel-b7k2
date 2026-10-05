@@ -54,10 +54,10 @@ PROD_SHEET_ID = "1AlcRl0byrg1HSVDhboZ150FvOi-hVd3wEpIwFqWgRZQ"
 PROD_GID = "614419876"
 PROD_DATA_START_ROW = 19  # 1-indexed row where the per-date shipment table begins
 
-# ---- Google Sheets (Регулярный менеджмент / lead-gen) --------------------
+# ---- Google Sheets ("ГОСТ отдел", monthly tab: lead-gen) -----------------
 
 LEADGEN_SHEET_ID = "1J7wM6L86ns3B64QGmi0wvMWLHiKDJXSIHdT0CG0Exs0"
-LEADGEN_GID = "1680454720"  # "Сентябрь" tab — update this gid when a new month's tab replaces it
+LEADGEN_GID = "197232306"  # "Октябрь" tab — update this gid when the next month's tab replaces it
 
 
 def http_get_json(url):
@@ -185,6 +185,14 @@ def fetch_leadgen():
                 return r[6].strip()
         return None
 
+    # The tab's own month name sits in row 1 (e.g. "Октябрь"); read it so the
+    # dashboard label always matches whichever tab the gid points at.
+    tab_month = None
+    for cell in rows[0] if rows else []:
+        if cell.strip().capitalize() in MONTHS_RU:
+            tab_month = cell.strip().capitalize()
+            break
+
     total_raw = first_match("Общее кол-во входящих обращений")
     conv_raw = first_match("Конверсия вход/квал лид")
 
@@ -199,6 +207,7 @@ def fetch_leadgen():
     return {
         "totalInquiries": int(num(total_raw)) if total_raw else 0,
         "conversionPct": round(conv_pct, 1),
+        "month": tab_month,
     }
 
 
