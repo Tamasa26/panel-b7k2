@@ -1,452 +1,392 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Продажи PERTiX</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=VT323&display=swap">
 <style>
   :root{
-    /* PERTiX brand tokens — sampled from pertix.ru production CSS */
-    --bg:#f3f4f9;
-    --surface:#ffffff;
-    --accent-light:#fff0f4;
-    --ink:#181924;
-    --muted:#5f6473;
-    --line:#e3e7f0;
-    --accent:#ff0037;
-    --accent-ink:#ffffff;
-    --blue:#1f51ff;
-    --blue-light:#ecf0ff;
-    --dark:#1f1f1f;
-    --good:#1f8a4c; --good-bg:#e6f5ea;
-    --warn:#b8790a; --warn-bg:#fff8e8;
-    --bad:#ff0037;  --bad-bg:#fff0f4;
-    --gold:#e8a63c;
-    --radius-lg:22px;
-    --radius-md:18px;
-    --shadow: 0 18px 50px rgba(16,24,80,.09);
+    /* retro OS palette: periwinkle grid, cream windows, brown ink */
+    --bg:#cddcf6;
+    --grid:#ffffff;
+    --panel:#fbe4cc;
+    --panel-2:#f3d2ae;
+    --ink:#3b2a2e;
+    --muted:#7d636a;
+    --border:#3b2a2e;
+    --teal:#5fb4a8;
+    --orange:#ee8a2d;
+    --title-ink:#3b2a2e;
+    --blue:#6f8ae6;
+    --good:#66cc74;
+    --warn:#f0c95c;
+    --bad:#ee6368;
+    --pill-ink:#2a1c20;
+    --gold:#f0c95c;
+    --shadow-c:rgba(59,42,46,.22);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#141414;
-      --surface:#1f1f1f;
-      --accent-light:rgba(255,0,55,.16);
-      --ink:#f4f4f5;
-      --muted:#9a9aa5;
-      --line:#333336;
-      --accent:#ff0037;
-      --accent-ink:#ffffff;
-      --blue:#5578ff;
-      --blue-light:rgba(31,81,255,.18);
-      --dark:#0d0d0d;
-      --good:#3fce82; --good-bg:rgba(63,206,130,.15);
-      --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-      --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
-      --gold:#f0b954;
-      --shadow: 0 18px 50px rgba(0,0,0,.5);
+      --bg:#1d2146;
+      --grid:rgba(255,255,255,.07);
+      --panel:#322e58;
+      --panel-2:#26234a;
+      --ink:#f6e7d4;
+      --muted:#b9aac0;
+      --border:#0d0e2a;
+      --teal:#3f9b90;
+      --orange:#d9782a;
+      --title-ink:#10122c;
+      --blue:#7b94e8;
+      --shadow-c:rgba(0,0,0,.4);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#141414;
-    --surface:#1f1f1f;
-    --accent-light:rgba(255,0,55,.16);
-    --ink:#f4f4f5;
-    --muted:#9a9aa5;
-    --line:#333336;
-    --accent:#ff0037;
-    --accent-ink:#ffffff;
-    --blue:#5578ff;
-    --blue-light:rgba(31,81,255,.18);
-    --dark:#0d0d0d;
-    --good:#3fce82; --good-bg:rgba(63,206,130,.15);
-    --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-    --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
-    --gold:#f0b954;
-    --shadow: 0 18px 50px rgba(0,0,0,.5);
+    --bg:#1d2146;
+    --grid:rgba(255,255,255,.07);
+    --panel:#322e58;
+    --panel-2:#26234a;
+    --ink:#f6e7d4;
+    --muted:#b9aac0;
+    --border:#0d0e2a;
+    --teal:#3f9b90;
+    --orange:#d9782a;
+    --title-ink:#10122c;
+    --blue:#7b94e8;
+    --shadow-c:rgba(0,0,0,.4);
   }
 
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:var(--bg);
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(var(--grid) 2px, transparent 2px),
+      linear-gradient(90deg, var(--grid) 2px, transparent 2px);
+    background-size:32px 32px;
+    background-position:-1px -1px;
     color:var(--ink);
-    font-family:"Manrope",system-ui,-apple-system,Segoe UI,sans-serif;
-    -webkit-font-smoothing:antialiased;
+    font-family:"Pixelify Sans","VT323",ui-monospace,Menlo,monospace;
+    font-size:15px;
+    line-height:1.25;
   }
-  .num{ font-variant-numeric:tabular-nums; font-weight:600; }
-  .topband{ height:5px; background:var(--accent); }
+  .num{ font-variant-numeric:tabular-nums; }
+  /* Pixelify Sans draws 5 and 3 like S and 8 — digits get VT323, which has
+     unambiguous numerals (words stay in Pixelify, which has Cyrillic). */
+  .d{
+    font-family:"VT323","Pixelify Sans",ui-monospace,monospace;
+    font-size:1.4em;
+    line-height:.8;
+    letter-spacing:.02em;
+    font-weight:400;
+  }
   .page{
     max-width:1280px;
     margin:0 auto;
     padding:24px 24px 40px;
   }
 
-  /* ---- header ---- */
-  .topbar{
+  /* ---- window chrome ---- */
+  .win{
+    background:var(--panel);
+    border:2px solid var(--border);
+    border-radius:4px;
+    box-shadow:4px 4px 0 var(--shadow-c);
+    overflow:hidden;
+    min-width:0;
+  }
+  .tb{
     display:flex;
-    align-items:flex-end;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    height:26px;
+    padding:0 8px 0 10px;
+    border-bottom:2px solid var(--border);
+    background:var(--teal);
+    color:var(--title-ink);
+  }
+  .tb.orange{ background:var(--orange); }
+  .tb-title{
+    margin:0;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.03em;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .wbtns{ flex:none; width:40px; height:8px; display:block; }
+  .wbody{ padding:14px 16px; }
+
+  /* ---- header ---- */
+  .header-win{ margin-bottom:22px; }
+  .header-body{
+    display:flex;
+    align-items:center;
     justify-content:space-between;
     gap:16px;
     flex-wrap:wrap;
-    margin-bottom:24px;
-    padding-bottom:18px;
-    border-bottom:1px solid var(--line);
+    padding:12px 16px;
   }
-  .brand{display:flex; align-items:center; gap:12px;}
-  .brand-mark{
-    width:42px;height:42px;border-radius:9px;
-    background:var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    flex:none;
-  }
-  .brand-mark svg{width:24px;height:24px;color:var(--accent-ink);}
-  .brand h1{
-    font-family:"Manrope",sans-serif;
-    font-weight:800;
-    font-size:28px;
-    line-height:1;
-    letter-spacing:-.01em;
-    margin:0 0 5px;
-    text-wrap:balance;
-  }
-  .brand .tagline{
-    margin:0;
-    font-size:13px;
-    color:var(--muted);
-  }
-  .meta{
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:6px;
-  }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand .logo{ display:block; line-height:0; }
+  .tagline{ margin:0; font-size:15px; }
+  .meta{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
   .month-badge{
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:.05em;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.06em;
     text-transform:uppercase;
     color:#fff;
-    background:radial-gradient(circle at 100% 0, rgba(255,0,55,.4), transparent 45%), var(--blue);
-    padding:7px 13px;
-    border-radius:999px;
+    background:var(--blue);
+    border:2px solid var(--border);
+    border-radius:3px;
+    padding:3px 10px;
   }
   .updated{
     display:flex;
     align-items:center;
-    gap:6px;
-    font-size:12px;
+    gap:7px;
+    font-size:13px;
     color:var(--muted);
   }
   .updated .dot{
-    width:7px;height:7px;border-radius:50%;
+    box-sizing:content-box;
+    width:6px; height:6px;
     background:var(--good);
+    border:2px solid var(--border);
     flex:none;
   }
-  .updated.stale .dot{background:var(--warn);}
+  .updated.stale .dot{ background:var(--warn); }
 
-  /* ---- department cards ---- */
+  /* ---- department windows ---- */
   .depts{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:20px;
-    margin-bottom:20px;
+    gap:22px;
+    margin-bottom:22px;
     align-items:start;
   }
   @media (max-width:860px){
-    .depts{grid-template-columns:1fr;}
+    .depts{ grid-template-columns:1fr; }
   }
   .dept-col{
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap:22px;
+    min-width:0;
   }
-  .dept-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    padding:20px 22px 8px;
-    box-shadow:var(--shadow);
-  }
-
-  /* ---- mini stat tiles under the ГОСТ card ---- */
-  .mini-stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
-  }
-  .mini-stat{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    box-shadow:var(--shadow);
-    padding:16px 18px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    gap:8px;
-  }
-  .mini-stat .stat-icon{ margin-bottom:2px; }
-  .mini-stat .stat-label{ margin:0; }
-  .mini-stat .stat-number{ font-size:30px; }
-  .gauge-wrap{ width:100%; max-width:150px; position:relative; }
-  .gauge-wrap svg{ width:100%; height:auto; display:block; }
-  .gauge-value{
-    position:absolute;
-    left:0; right:0; bottom:2px;
-    text-align:center;
-    font-family:"Manrope",sans-serif;
-    font-weight:800;
-    font-size:22px;
-    font-variant-numeric:tabular-nums;
-  }
-  .gauge-needle{ transition:transform .6s cubic-bezier(.32,.02,.25,1); }
-  .dept-head{
+  .dept-summary{
     display:flex;
     justify-content:space-between;
-    align-items:flex-start;
+    align-items:center;
     gap:12px;
-    padding-bottom:14px;
-    margin-bottom:10px;
-    border-bottom:1px solid var(--line);
+    padding-bottom:12px;
+    margin-bottom:4px;
+    border-bottom:2px dashed var(--border);
   }
-  .dept-name{
-    font-family:"Manrope",sans-serif;
-    font-weight:800;
-    font-size:20px;
-    letter-spacing:.01em;
-    margin:0 0 3px;
-    color:var(--ink);
-  }
-  .dept-sub{
-    font-size:12.5px;
-    color:var(--muted);
-  }
+  .dept-sub{ font-size:14px; color:var(--muted); }
 
   .pct-pill{
     flex:none;
-    font-weight:700;
-    font-size:15px;
-    padding:6px 12px;
-    border-radius:10px;
+    font-family:"VT323","Pixelify Sans",monospace;
+    font-weight:400;
+    font-size:21px;
+    line-height:1;
+    padding:2px 9px 1px;
+    border:2px solid var(--border);
+    border-radius:3px;
+    color:var(--pill-ink);
     white-space:nowrap;
     font-variant-numeric:tabular-nums;
   }
-  .pct-pill.small{font-size:12.5px; padding:4px 9px; border-radius:8px;}
-  .pct-good{color:var(--good); background:var(--good-bg);}
-  .pct-warn{color:var(--warn); background:var(--warn-bg);}
-  .pct-bad {color:var(--bad);  background:var(--bad-bg);}
+  .pct-pill.big{ font-size:27px; padding:3px 12px 2px; }
+  .pct-good{ background:var(--good); }
+  .pct-warn{ background:var(--warn); }
+  .pct-bad { background:var(--bad); }
 
   .mgr-row{
     display:grid;
-    grid-template-columns:112px 1fr auto;
+    grid-template-columns:104px 1fr auto;
     align-items:center;
     gap:14px;
-    padding:12px 0;
-    border-bottom:1px solid var(--line);
+    padding:11px 0;
+    border-bottom:2px dashed color-mix(in srgb, var(--border) 28%, transparent);
   }
-  .mgr-row:last-child{border-bottom:none;}
+  .mgr-row:last-child{ border-bottom:none; padding-bottom:2px; }
   .mgr-name{
     font-weight:700;
-    font-size:14.5px;
+    font-size:16px;
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
   }
-  .mgr-bar{
-    position:relative;
-    height:9px;
-    border-radius:999px;
-    background:var(--surface-2);
-    border:1px solid var(--line);
-    overflow:visible;
+  .px-bar{
+    height:18px;
+    border:2px solid var(--border);
+    border-radius:3px;
+    background:var(--panel-2);
+    padding:2px;
   }
-  .mgr-bar-fill{
-    position:absolute; left:0; top:0; bottom:0;
-    border-radius:999px;
-    overflow:hidden;
+  .px-fill{
+    height:100%;
+    background:repeating-linear-gradient(90deg, var(--c) 0 9px, transparent 9px 12px);
   }
   .mgr-figures{
-    margin-top:6px;
-    font-size:11.5px;
+    margin-top:5px;
+    font-size:13px;
     color:var(--muted);
     display:flex;
-    gap:5px;
+    gap:6px;
     flex-wrap:wrap;
   }
-  .mgr-row .pct-cell{
+  .pct-cell{
     display:flex;
     align-items:center;
-    gap:6px;
+    gap:8px;
     justify-self:end;
   }
   @media (max-width:520px){
-    .mgr-row{grid-template-columns:1fr; row-gap:6px;}
-    .mgr-row .pct-cell{justify-self:start;}
+    .mgr-row{ grid-template-columns:1fr; row-gap:6px; }
+    .pct-cell{ justify-self:start; }
   }
 
-  /* ---- fire reward, shown on rows meeting plan ---- */
-  .fire-icon{
-    display:inline-block;
-    width:44px; height:44px;
-    flex:none;
-    animation:flicker 1.3s ease-in-out infinite;
-    transform-origin:50% 100%;
-  }
-  @keyframes flicker{
-    0%,100%{ transform:scale(1,1) rotate(0deg); }
-    35%    { transform:scale(1.06,.94) rotate(-1.5deg); }
-    65%    { transform:scale(.95,1.06) rotate(1.5deg); }
+  /* ---- pixel sprites ---- */
+  .sprite{ display:block; image-rendering:pixelated; }
+  .fire-icon{ animation:flame .6s steps(1,end) infinite; }
+  @keyframes flame{
+    0%  { transform:translateY(0); }
+    50% { transform:translateY(-2px); }
   }
   @media (prefers-reduced-motion: reduce){
     .fire-icon{ animation:none; }
   }
 
-  /* ---- stat tiles ---- */
+  /* ---- stat windows ---- */
   .stats{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
-    gap:20px;
-    margin-bottom:22px;
+    gap:22px;
   }
   @media (max-width:920px){
-    .stats{grid-template-columns:1fr 1fr;}
+    .stats{ grid-template-columns:1fr 1fr; }
   }
   @media (max-width:560px){
-    .stats{grid-template-columns:1fr;}
+    .stats{ grid-template-columns:1fr; }
   }
-  .mascot-inline{
-    flex:0 0 auto;
-    width:124px;
-    margin-left:auto;
+  .mini-stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
   }
-  .mascot-inline svg{ width:100%; height:auto; overflow:visible; }
-  .stat-card{
-    background:var(--surface);
-    border:1px solid var(--line);
-    border-radius:var(--radius-lg);
-    padding:20px 22px;
-    box-shadow:var(--shadow);
+  @media (max-width:520px){
+    .mini-stats{ grid-template-columns:1fr; }
+  }
+  .stat-body{
     display:flex;
     align-items:center;
-    gap:16px;
+    gap:14px;
   }
-  .stat-icon{
+  .slot{
     flex:none;
-    width:56px;height:56px;
-    border-radius:16px;
-    background:var(--accent-light);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--accent);
-  }
-  .stat-icon svg{width:30px;height:30px;}
-  .stat-icon.illustrated{ background:var(--blue-light); }
-  .stat-card.warn-tile .stat-icon{color:var(--bad);}
-  .stat-label{
-    font-size:12.5px;
-    color:var(--muted);
-    margin:0 0 2px;
+    width:66px; height:66px;
+    background:var(--panel-2);
+    border:2px solid var(--border);
+    border-radius:3px;
+    display:grid;
+    place-items:center;
   }
   .stat-number{
-    font-family:"Manrope",sans-serif;
-    font-weight:800;
-    font-size:36px;
-    line-height:1;
+    font-family:"VT323","Pixelify Sans",monospace;
+    font-weight:400;
+    font-size:60px;
+    line-height:.85;
     font-variant-numeric:tabular-nums;
   }
-  .stat-card.warn-tile .stat-number{ color:var(--bad); }
+  .stat-bad .stat-number{ color:#d2383d; }
+  :root[data-theme="dark"] .stat-bad .stat-number{ color:#ff8a8e; }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]) .stat-bad .stat-number{ color:#ff8a8e; }
+  }
   .stat-sub{
-    margin-top:4px;
-    font-size:13px;
+    margin-top:8px;
+    font-family:"VT323","Pixelify Sans",monospace;
+    font-size:22px;
+    line-height:1;
     color:var(--muted);
     font-variant-numeric:tabular-nums;
   }
 
-  footer{
-    font-size:11.5px;
-    color:var(--muted);
-    text-align:center;
-    padding-top:6px;
+  /* ---- gauge ---- */
+  .gauge-body{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:2px;
+    padding:12px 16px 12px;
   }
+  .gauge-body svg{ width:100%; max-width:168px; height:auto; display:block; }
+  .gauge-value{
+    font-family:"VT323","Pixelify Sans",monospace;
+    font-weight:400;
+    font-size:34px;
+    line-height:.9;
+    font-variant-numeric:tabular-nums;
+  }
+  .gauge-needle{ transition:transform .6s steps(12,end); }
 </style>
 
-<div class="topband"></div>
 <div class="page">
-  <div class="topbar">
-    <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v5h-5.5v11h-5V9H4V4Z"/></svg>
-      </div>
-      <div>
-        <h1>PERTiX</h1>
+  <section class="win header-win">
+    <div class="tb orange">
+      <h1 class="tb-title">PERTiX</h1>
+      <span data-wbtns></span>
+    </div>
+    <div class="wbody header-body">
+      <div class="brand">
+        <span class="logo" data-sprite="logo"></span>
         <p class="tagline">Продажи · нарастающим итогом с начала года</p>
       </div>
+      <div class="meta">
+        <div class="month-badge" id="monthBadge">—</div>
+        <div class="updated" id="updated"><span class="dot"></span><span id="updatedText">—</span></div>
+      </div>
     </div>
-    <div class="meta">
-      <div class="month-badge" id="monthBadge">—</div>
-      <div class="updated" id="updated"><span class="dot"></span><span id="updatedText">—</span></div>
-    </div>
-  </div>
+  </section>
 
   <div class="depts" id="depts"></div>
 
-  <div class="stats-row">
   <div class="stats">
-    <div class="stat-card">
-      <div class="stat-icon illustrated">
-        <svg viewBox="0 0 64 48" width="34" height="26">
-          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#c9975a"/>
-          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#000" opacity=".06"/>
-          <path d="M35.5 17.5v8M31 21.5h9" stroke="#8a6338" stroke-width="1.3"/>
-          <path d="M39 18l2.4 2.6-4.8 0Z" fill="#8a6338"/>
-          <rect x="30" y="29" width="26" height="4.5" rx="1" fill="#f5a623"/>
-          <path d="M10 12 L30 25" stroke="#3a3a3a" stroke-width="3" stroke-linecap="round"/>
-          <rect x="27" y="24" width="5" height="9" rx="1.4" fill="#e8901a"/>
-          <circle cx="8" cy="10" r="2.6" fill="#3a3a3a"/>
-          <circle cx="34" cy="41" r="4" fill="#232323"/>
-          <circle cx="34" cy="41" r="1.6" fill="#5a5a5a"/>
-          <circle cx="54" cy="41" r="4" fill="#232323"/>
-          <circle cx="54" cy="41" r="1.6" fill="#5a5a5a"/>
-        </svg>
-      </div>
-      <div>
-        <p class="stat-label">Отгрузок с начала года</p>
+    <section class="win">
+      <div class="tb"><h3 class="tb-title">Отгрузок с начала года</h3><span data-wbtns></span></div>
+      <div class="wbody stat-body">
+        <div class="slot" data-sprite="box"></div>
         <div class="stat-number num" id="shipmentsCount">—</div>
       </div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19.5a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 17.85a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.15 6.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H8.6a1.7 1.7 0 0 0 1.04-1.56V.5"/></svg>
+    </section>
+    <section class="win">
+      <div class="tb"><h3 class="tb-title">В производстве сейчас</h3><span data-wbtns></span></div>
+      <div class="wbody stat-body">
+        <div class="slot" data-sprite="hourglass"></div>
+        <div>
+          <div class="stat-number num" id="productionCount">—</div>
+          <div class="stat-sub num" id="productionSum">—</div>
+        </div>
       </div>
-      <div>
-        <p class="stat-label">В производстве сейчас</p>
-        <div class="stat-number num" id="productionCount">—</div>
-        <p class="stat-sub num" id="productionSum">—</p>
-      </div>
-    </div>
-    <div class="stat-card warn-tile">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v6"/><circle cx="12" cy="16.3" r="1" fill="currentColor" stroke="none"/></svg>
-      </div>
-      <div>
-        <p class="stat-label">Несвоевременных отгрузок</p>
+    </section>
+    <section class="win stat-bad">
+      <div class="tb orange"><h3 class="tb-title">Несвоевременных отгрузок</h3><span data-wbtns></span></div>
+      <div class="wbody stat-body">
+        <div class="slot" data-sprite="boxwarn"></div>
         <div class="stat-number num" id="lateShipmentsCount">—</div>
       </div>
-      <div class="mascot-inline" aria-hidden="true">
-        <svg viewBox="0 0 100 90">
-          <polygon points="14,34 40,20 74,20 48,34" fill="#e0a468"/>
-          <polygon points="14,34 48,34 48,68 14,68" fill="#c9814a"/>
-          <polygon points="48,34 74,20 74,54 48,68" fill="#a86a3a"/>
-          <rect x="26" y="44" width="12" height="12" fill="#8a6338" opacity=".55"/>
-          <path d="M70 46 L92 84 L48 84 Z" fill="#f5b920" stroke="#2b2b2b" stroke-width="3.5" stroke-linejoin="round"/>
-          <rect x="68" y="58" width="4" height="13" rx="2" fill="#2b2b2b"/>
-          <circle cx="70" cy="76" r="2.4" fill="#2b2b2b"/>
-        </svg>
-      </div>
-    </div>
+    </section>
   </div>
-
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-10-27T12:28:17.878122+03:00", "currentMonth": "Октябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 51500000, "fact": 54620952, "pct": 106.1}, {"name": "Филаретова", "plan": 37655000, "fact": 46539560, "pct": 123.6}, {"name": "Муканян", "plan": 1000000, "fact": 860000, "pct": 86.0}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 75325000, "fact": 47813921, "pct": 63.5}, {"name": "Роганин", "plan": 67000000, "fact": 12535743, "pct": 18.7}, {"name": "Маркова", "plan": 67000000, "fact": 49155252, "pct": 73.4}, {"name": "Малашкин", "plan": 67000000, "fact": 80908930, "pct": 120.8}, {"name": "Извекова", "plan": 28500000, "fact": 40784473, "pct": 143.1}, {"name": "Ерицян", "plan": 28500000, "fact": 21144610, "pct": 74.2}]}], "shipments": {"count": 633}, "lateShipments": {"count": 60}, "production": {"count": 30, "sum": 30046252}, "leadGen": {"totalInquiries": 550, "conversionPct": 34.7, "month": "Октябрь"}, "sourceUpdatedAt": "2026-10-27T12:27:48+03:00"};
+  const DATA = {"updatedAt": "2026-10-27T12:36:07.954353+03:00", "currentMonth": "Октябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 51500000, "fact": 54620952, "pct": 106.1}, {"name": "Филаретова", "plan": 37655000, "fact": 46539560, "pct": 123.6}, {"name": "Муканян", "plan": 1000000, "fact": 860000, "pct": 86.0}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 75325000, "fact": 47813921, "pct": 63.5}, {"name": "Роганин", "plan": 67000000, "fact": 12535743, "pct": 18.7}, {"name": "Маркова", "plan": 67000000, "fact": 49155252, "pct": 73.4}, {"name": "Малашкин", "plan": 67000000, "fact": 80908930, "pct": 120.8}, {"name": "Извекова", "plan": 28500000, "fact": 40784473, "pct": 143.1}, {"name": "Ерицян", "plan": 28500000, "fact": 21144610, "pct": 74.2}]}], "shipments": {"count": 633}, "lateShipments": {"count": 60}, "production": {"count": 30, "sum": 30046252}, "leadGen": {"totalInquiries": 550, "conversionPct": 34.7, "month": "Октябрь"}, "sourceUpdatedAt": "2026-10-27T12:27:48+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
@@ -463,22 +403,145 @@
     return 'good';
   }
 
-  function fireSVG(){
-    return `
-    <svg class="fire-icon" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2c-2.2 3.4-5 6-5 10a5 5 0 0 0 10 0c0-1.6-.5-3-1.4-4.2.3 2-.8 3.4-1.8 4C14.2 8.6 12.6 6 12 2Z" fill="#e8412f"/>
-      <path d="M12 7.5c-1 1.8-2.3 3.2-2.3 5a2.3 2.3 0 0 0 4.6 0c0-.9-.3-1.7-.8-2.4.1 1-.4 1.8-1 2.1C13 10.4 12.4 9 12 7.5Z" fill="#f7931e"/>
-      <path d="M12.1 13.4c-.5.9-1 1.7-1 2.4a1.1 1.1 0 0 0 2.2 0c0-.4-.1-.9-.4-1.2 0 .4-.2.7-.5.8.1-.7-.1-1.4-.3-2Z" fill="#ffd23f"/>
-    </svg>`;
+  // wrap runs of digits (and their separators) so they render in the digit font
+  function dg(str){
+    return String(str).replace(/[0-9][0-9\s\u00a0:.,%]*[0-9%]|[0-9]/g, m => '<span class="d">' + m + '</span>');
   }
 
+  /* ---------- pixel sprites ---------- */
+  const PAL = {
+    K:'#3b2a2e', R:'#e8575a', O:'#ee8a2d', Y:'#f0c95c', W:'#fff3e0',
+    B:'#d99a5b', L:'#ecc08a', G:'#8d7f86'
+  };
+  function rectsOf(grid, ox, oy){
+    let out = '';
+    grid.forEach((row, y) => {
+      for (let x = 0; x < row.length; x++){
+        const c = row[x];
+        if (c === '.') continue;
+        out += `<rect x="${x+ox}" y="${y+oy}" width="1.04" height="1.04" fill="${PAL[c]}"/>`;
+      }
+    });
+    return out;
+  }
+  function spriteSVG(w, h, px, inner, cls){
+    return `<svg class="sprite ${cls||''}" width="${w*px}" height="${h*px}" viewBox="0 0 ${w} ${h}" shape-rendering="crispEdges" aria-hidden="true">${inner}</svg>`;
+  }
+
+  const G_FLAME = [
+    "....KK....",
+    "...KRRK...",
+    "...KRRRK..",
+    "..KRRORRK.",
+    "..KRORRRK.",
+    ".KRROORRRK",
+    ".KRORYORRK",
+    "KRROOYOORK",
+    "KRROYYYORK",
+    "KRROYYYORK",
+    ".KROYYYORK",
+    ".KRROOORK.",
+    "..KRRRRK..",
+    "...KKKK..."
+  ];
+  const G_BOX = [
+    "KKKKKKKKKKK",
+    "KLLLLLLLLLK",
+    "KKKKKKKKKKK",
+    "KBBBGGGBBBK",
+    "KBBBGGGBBBK",
+    "KBBBBBBBBBK",
+    "KBBBBBBBBBK",
+    "KBBBBBBBBBK",
+    "KKKKKKKKKKK"
+  ];
+  const G_WARN = [
+    ".....KK.....",
+    "....KYYK....",
+    "....KYYK....",
+    "...KYKKYK...",
+    "...KYKKYK...",
+    "..KYYKKYYK..",
+    "..KYYKKYYK..",
+    ".KYYYYYYYYK.",
+    ".KYYYKKYYYK.",
+    "KYYYYYYYYYYK",
+    "KKKKKKKKKKKK"
+  ];
+  const G_HOURGLASS = [
+    "KKKKKKKKK",
+    "KWWWWWWWK",
+    ".KWWWWWK.",
+    "..KYYYK..",
+    "...KYK...",
+    "....K....",
+    "...KYK...",
+    "..KYYYK..",
+    ".KYYYYYK.",
+    "KYYYYYYYK",
+    "KKKKKKKKK"
+  ];
+  const G_BUBBLE = [
+    "..KKKKKKKKKKK..",
+    ".KRRRRRRRRRRRK.",
+    "KRRRRRRRRRRRRRK",
+    "KRRRRWWRWWRRRRK",
+    "KRRRWWWWWWWRRRK",
+    "KRRRWWWWWWWRRRK",
+    "KRRRRWWWWWRRRRK",
+    "KRRRRRWWWRRRRRK",
+    "KRRRRRRWRRRRRRK",
+    "KRRRRRRRRRRRRRK",
+    ".KRRRRRRRRRRRK.",
+    "..KKKKKKKKKKK..",
+    "..KRK..........",
+    "..KK..........."
+  ];
+  const G_LOGO = [
+    "KKKKKKKKKKKK",
+    "KRRRRRRRRRRK",
+    "KRWWWWWWWWRK",
+    "KRWWWWWWWWRK",
+    "KRRRRWWRRRRK",
+    "KRRRRWWRRRRK",
+    "KRRRRWWRRRRK",
+    "KRRRRWWRRRRK",
+    "KRRRRWWRRRRK",
+    "KRRRRRRRRRRK",
+    "KRRRRRRRRRRK",
+    "KKKKKKKKKKKK"
+  ];
+
+  const SPRITES = {
+    flame:     () => spriteSVG(10, 14, 2.4, rectsOf(G_FLAME,0,0), 'fire-icon'),
+    box:       () => spriteSVG(11, 9, 4, rectsOf(G_BOX,0,0)),
+    boxwarn:   () => spriteSVG(19, 15, 3, rectsOf(G_BOX,0,0) + rectsOf(G_WARN,7,4)),
+    hourglass: () => spriteSVG(9, 11, 4, rectsOf(G_HOURGLASS,0,0)),
+    bubble:    () => spriteSVG(15, 14, 3, rectsOf(G_BUBBLE,0,0)),
+    logo:      () => spriteSVG(12, 12, 3, rectsOf(G_LOGO,0,0))
+  };
+
+  const WBTNS = `<svg class="wbtns" viewBox="0 0 40 8" shape-rendering="crispEdges" aria-hidden="true">
+    <rect x="0" y="6" width="8" height="2" fill="currentColor"/>
+    <rect x="16" y="1" width="6" height="6" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M31 0h2v2h-2zM37 0h2v2h-2zM33 2h4v4h-4zM31 6h2v2h-2zM37 6h2v2h-2z" fill="currentColor"/>
+  </svg>`;
+
+  function initStatic(){
+    document.querySelectorAll('[data-sprite]').forEach(el => {
+      const f = SPRITES[el.dataset.sprite];
+      if (f) el.innerHTML = f();
+    });
+    document.querySelectorAll('[data-wbtns]').forEach(el => { el.outerHTML = WBTNS; });
+  }
+
+  /* ---------- department windows ---------- */
   function renderDept(dept){
     const totalPlan = dept.managers.reduce((s,m)=>s+m.plan,0);
     const totalFact = dept.managers.reduce((s,m)=>s+m.fact,0);
     const totalPct = totalPlan ? (totalFact/totalPlan*100) : 0;
     const tTier = tier(totalPct);
 
-    const mascot = fireSVG;
     const rows = dept.managers.map(m => {
       const t = tier(m.pct);
       const width = Math.min(m.pct, 100);
@@ -486,29 +549,30 @@
         <div class="mgr-row">
           <div class="mgr-name">${m.name}</div>
           <div>
-            <div class="mgr-bar"><div class="mgr-bar-fill" style="width:${width}%;background:var(--${t})"></div></div>
-            <div class="mgr-figures num"><span>план ${fmtMoney(m.plan)}</span><span>&rarr; факт ${fmtMoney(m.fact)}</span></div>
+            <div class="px-bar"><div class="px-fill" style="width:${width}%;--c:var(--${t})"></div></div>
+            <div class="mgr-figures num"><span>${dg('план ' + fmtMoney(m.plan))}</span><span>&rarr; ${dg('факт ' + fmtMoney(m.fact))}</span></div>
           </div>
           <div class="pct-cell">
-            ${t === 'good' ? mascot() : ''}
-            <div class="pct-pill small pct-${t}">${fmtPct(m.pct)}</div>
+            ${t === 'good' ? SPRITES.flame() : ''}
+            <div class="pct-pill pct-${t}">${fmtPct(m.pct)}</div>
           </div>
         </div>`;
     }).join('');
 
     return `
-      <section class="dept-card">
-        <div class="dept-head">
-          <div>
-            <h2 class="dept-name">${dept.name}</h2>
-            <div class="dept-sub">план <span class="num">${fmtMoney(totalPlan)}</span> &middot; факт <span class="num">${fmtMoney(totalFact)}</span></div>
+      <section class="win">
+        <div class="tb"><h2 class="tb-title">${dept.name}</h2>${WBTNS}</div>
+        <div class="wbody">
+          <div class="dept-summary">
+            <div class="dept-sub num">${dg('план ' + fmtMoney(totalPlan))} &middot; ${dg('факт ' + fmtMoney(totalFact))}</div>
+            <div class="pct-pill big pct-${tTier}">${fmtPct(totalPct)}</div>
           </div>
-          <div class="pct-pill pct-${tTier}">${fmtPct(totalPct)}</div>
+          ${rows}
         </div>
-        ${rows}
       </section>`;
   }
 
+  /* ---------- gauge (0-45%: red / yellow / green) ---------- */
   let gaugeSeq = 0;
   function gaugeSVG(valuePct){
     const max = 45;
@@ -516,23 +580,22 @@
     const deg = (clamped / max) * 180 - 90;
     const gradId = 'gauge-grad-' + (gaugeSeq++);
     return `
-      <div class="gauge-wrap">
-        <svg viewBox="0 0 120 66" aria-hidden="true">
-          <defs>
-            <linearGradient id="${gradId}" gradientUnits="userSpaceOnUse" x1="10" y1="60" x2="110" y2="60">
-              <stop offset="0%" stop-color="#ef6a5f"/>
-              <stop offset="27%" stop-color="#f0a860"/>
-              <stop offset="50%" stop-color="#e8c467"/>
-              <stop offset="73%" stop-color="#b9cf6a"/>
-              <stop offset="100%" stop-color="#6fbf73"/>
-            </linearGradient>
-          </defs>
-          <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="${'url(#' + gradId + ')'}" stroke-width="10" stroke-linecap="round"/>
-          <line class="gauge-needle" x1="60" y1="60" x2="60" y2="19" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" transform="rotate(${deg} 60 60)"/>
-          <circle cx="60" cy="60" r="5" fill="var(--ink)"/>
-        </svg>
-        <div class="gauge-value num">${fmtPct(valuePct)}</div>
-      </div>`;
+      <svg viewBox="0 0 120 68" aria-hidden="true">
+        <defs>
+          <linearGradient id="${gradId}" gradientUnits="userSpaceOnUse" x1="10" y1="60" x2="110" y2="60">
+            <stop offset="0%" stop-color="#ee6368"/>
+            <stop offset="28%" stop-color="#ee8a2d"/>
+            <stop offset="52%" stop-color="#f0c95c"/>
+            <stop offset="76%" stop-color="#b6d86a"/>
+            <stop offset="100%" stop-color="#66cc74"/>
+          </linearGradient>
+        </defs>
+        <path d="M8,60 A52,52 0 0,1 112,60" fill="none" stroke="var(--border)" stroke-width="16"/>
+        <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="url(#${gradId})" stroke-width="11"/>
+        <line class="gauge-needle" x1="60" y1="60" x2="60" y2="20" stroke="var(--border)" stroke-width="4" transform="rotate(${deg} 60 60)"/>
+        <rect x="54" y="54" width="12" height="12" fill="var(--border)"/>
+        <rect x="57" y="57" width="6" height="6" fill="var(--panel)"/>
+      </svg>`;
   }
 
   const MONTH_SHORT = {
@@ -543,24 +606,23 @@
 
   function renderMiniStats(data){
     const lg = data.leadGen || {totalInquiries: 0, conversionPct: 0};
+    const monthTag = lg.month && MONTH_SHORT[lg.month] ? ' (' + MONTH_SHORT[lg.month] + ')' : '';
     return `
       <div class="mini-stats">
-        <div class="mini-stat">
-          <div class="stat-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2H7.2L4 15v-2.5H4a2 2 0 0 1-2-2V6Z"/>
-              <path d="M4.7 7.2h4.6M4.7 9.4h3"/>
-              <path d="M9.5 3.5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-1l-3 2.6v-2.6h-4a2 2 0 0 1-2-2v-6Z" fill="var(--surface)"/>
-              <path d="M13 11.3v-3.2l1.5-2.1c.25-.35.8-.25.9.15l.15.85h1.6c.55 0 .95.5.8 1.05l-.5 2.05a.9.9 0 0 1-.85.65H13Z" fill="currentColor" stroke="none"/>
-            </svg>
+        <section class="win">
+          <div class="tb"><h3 class="tb-title">Всего обращений${monthTag}</h3>${WBTNS}</div>
+          <div class="wbody stat-body">
+            <div class="slot">${SPRITES.bubble()}</div>
+            <div class="stat-number num">${fmtInt(lg.totalInquiries)}</div>
           </div>
-          <p class="stat-label">Всего обращений${lg.month && MONTH_SHORT[lg.month] ? ' (' + MONTH_SHORT[lg.month] + ')' : ''}</p>
-          <div class="stat-number num">${fmtInt(lg.totalInquiries)}</div>
-        </div>
-        <div class="mini-stat">
-          <p class="stat-label">Конверсия лидов</p>
-          ${gaugeSVG(lg.conversionPct)}
-        </div>
+        </section>
+        <section class="win">
+          <div class="tb"><h3 class="tb-title">Конверсия лидов</h3>${WBTNS}</div>
+          <div class="gauge-body">
+            ${gaugeSVG(lg.conversionPct)}
+            <div class="gauge-value num">${fmtPct(lg.conversionPct)}</div>
+          </div>
+        </section>
       </div>`;
   }
 
@@ -579,7 +641,7 @@
 
     const updatedAt = new Date(data.updatedAt);
     const fmt = new Intl.DateTimeFormat('ru-RU', {day:'numeric', month:'long', hour:'2-digit', minute:'2-digit'});
-    document.getElementById('updatedText').textContent = 'Обновлено ' + fmt.format(updatedAt);
+    document.getElementById('updatedText').innerHTML = dg('Обновлено ' + fmt.format(updatedAt));
 
     const staleMs = Date.now() - updatedAt.getTime();
     document.getElementById('updated').classList.toggle('stale', staleMs > 90*60*1000);
@@ -594,6 +656,7 @@
     location.replace(location.pathname + '?t=' + Date.now());
   }
 
+  initStatic();
   render(DATA);
   setInterval(() => render(DATA), 60000);
 
