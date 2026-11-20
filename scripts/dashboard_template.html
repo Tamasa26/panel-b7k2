@@ -471,40 +471,86 @@
     filter:drop-shadow(0 2px 2px #27395838);
   }
   .garland-loop:nth-child(even) .garland-stocking{transform:rotate(-9deg);}
-  .holiday-snowmen{
-    display:flex;
-    justify-content:flex-end;
-    padding-inline:clamp(14px,4vw,54px);
-    position:relative;
-    height:44px;
+  .holiday-grove{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr)) minmax(72px,1.35fr) repeat(2,minmax(0,1fr));
+    align-items:end;
+    justify-items:center;
+    gap:clamp(3px,2vw,24px);
+    width:min(100%,720px);
+    margin:0 auto 12px;
     pointer-events:none;
   }
+  .holiday-snowmen{width:100%;max-width:156px;}
   .holiday-snowmen svg{
-    position:absolute;
-    bottom:4px;
-    width:125px;
-    height:59px;
+    display:block;
+    width:100%;
     filter:drop-shadow(0 4px 4px #3955822e);
   }
+  .snowman-arm{
+    transform-box:view-box;
+    animation:holiday-spar 24s ease-in-out infinite;
+  }
+  .snowman-arm:first-of-type{transform-origin:54px 33px;--swing:42deg;}
+  .snowman-arm:nth-of-type(2){transform-origin:85px 37px;--swing:-42deg;animation-delay:.22s;}
+  @keyframes holiday-spar{
+    0%,25%,35%,100%{transform:rotate(0);}
+    27%,31%,33%{transform:rotate(var(--swing));}
+    29%{transform:rotate(calc(0deg - var(--swing) / 3));}
+  }
 
-  .topbar{align-items:center;}
   .holiday-tree{
     position:relative;
-    flex:none;
-    width:clamp(106px,16vw,205px);
-    height:clamp(125px,20vw,236px);
-    margin-inline:auto 0;
-    pointer-events:none;
+    isolation:isolate;
+    width:100%;
+    max-width:var(--tree-width);
+    aspect-ratio:1 / 1.2;
+    --tree-width:116px;
+    --tree-tint:0deg;
+    --light:#ffe383;
+    --light-alt:#ff89af;
   }
-  .holiday-tree img{
+  .holiday-tree.icy{
+    --tree-width:96px;--tree-tint:16deg;--light:#a2edff;--light-alt:#b6a7ff;
+  }
+  .holiday-tree.rose{
+    --tree-width:106px;--tree-tint:-12deg;--light:#ff9cc9;--light-alt:#fff1a3;
+  }
+  .holiday-tree.mint{
+    --tree-width:90px;--tree-tint:8deg;--light:#a5ffe8;--light-alt:#ffd078;
+  }
+  .tree-crown{
+    position:absolute;
+    inset:0;
+    transform-origin:50% 90%;
+  }
+  .tree-crown img{
     display:block;
     width:100%;
     height:100%;
     object-fit:contain;
-    transform-origin:50% 90%;
-    filter:drop-shadow(0 11px 17px #258a7040);
+    filter:hue-rotate(var(--tree-tint)) drop-shadow(0 5px 6px #258a703b);
   }
-  .holiday-tree.is-shaking img{animation:holiday-shake 1.4s ease-in-out;}
+  .holiday-tree.is-shaking .tree-crown{animation:holiday-shake 1.4s ease-in-out;}
+  .tree-light{
+    position:absolute;
+    width:clamp(3px,1vw,6px);
+    aspect-ratio:1;
+    border-radius:50%;
+    --bulb:var(--light);
+    background:var(--bulb);
+    animation:holiday-glow 1.8s ease-in-out infinite alternate;
+  }
+  .tree-light:nth-of-type(even){--bulb:var(--light-alt);}
+  .tree-light:nth-of-type(1){left:41%;top:36%;animation-delay:-.4s;}
+  .tree-light:nth-of-type(2){left:58%;top:42%;animation-delay:-1.6s;}
+  .tree-light:nth-of-type(3){left:32%;top:53%;animation-delay:-1.1s;}
+  .tree-light:nth-of-type(4){left:49%;top:59%;animation-delay:-.3s;}
+  .tree-light:nth-of-type(5){left:67%;top:55%;animation-delay:-.9s;}
+  .tree-light:nth-of-type(6){left:24%;top:68%;animation-delay:-1.5s;}
+  .tree-light:nth-of-type(7){left:42%;top:74%;animation-delay:-.6s;}
+  .tree-light:nth-of-type(8){left:62%;top:73%;animation-delay:-1.2s;}
+  .tree-light:nth-of-type(9){left:74%;top:68%;animation-delay:-.2s;}
   @keyframes holiday-shake{
     0%,100%{transform:rotate(0);}
     17%{transform:rotate(-5deg);}
@@ -551,9 +597,6 @@
     100%{transform:translate(var(--drift),var(--drop));opacity:0;}
   }
   @media (max-width:620px){
-    .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;}
-    .topbar .meta{grid-column:1/-1;}
-    .holiday-tree{width:86px;height:110px;}
     .topbar .meta{align-items:flex-start;}
   }
   @media (max-width:360px){
@@ -563,7 +606,7 @@
   @media (prefers-reduced-motion:reduce){
     .garland-bulb{animation:none;}
     .holiday-snow,.tree-snow{display:none;}
-    .holiday-tree.is-shaking img{animation:none;}
+    .holiday-tree.is-shaking .tree-crown,.tree-light,.snowman-arm{animation:none;}
   }
 </style>
 
@@ -580,7 +623,6 @@
         <p class="tagline">Продажи · нарастающим итогом с начала года</p>
       </div>
     </div>
-    <div class="holiday-tree" aria-hidden="true"><img src="assets/holiday-tree.webp" alt=""></div>
     <div class="meta">
       <div class="month-badge" id="monthBadge">—</div>
       <div class="updated" id="updated"><span class="dot"></span><span id="updatedText">—</span></div>
@@ -589,27 +631,63 @@
 
   <div class="depts" id="depts"></div>
 
-  <div class="holiday-snowmen" aria-hidden="true">
-    <svg viewBox="0 0 125 59" fill="none">
-      <ellipse cx="66" cy="53" rx="54" ry="5" fill="#c5d9ee" opacity=".65"/>
-      <path d="M32 35 23 29l-5 1m5-1-2-5m33 9 9-8 3-5m-3 5 6 1M85 37l-8-8-4-1m31 5 9-7 2-5m-2 5 6 1" stroke="#86647a" stroke-width="1.6" stroke-linecap="round"/>
-      <circle cx="44" cy="41" r="14" fill="#f5fbff" stroke="#a5c1e1"/>
-      <circle cx="43" cy="25" r="10" fill="#fff" stroke="#a5c1e1"/>
-      <path d="M30 18 55 20l.4-3-6-1 .7-9-12-1-1 9-7-.5Z" fill="#40527c"/>
-      <path d="m37 13 12 1-.2 2-12-1Z" fill="#e47e98"/>
-      <path d="M34 31q10 6 18 1l2 4q-5 3-9 3l4 7-4 2-5-10q-5-1-8-4Z" fill="#db6486"/>
-      <path d="m43 26 8 2-8 1Z" fill="#eb9a4c"/>
-      <path d="M39 24h.1m7 0h.1m-6 21h.1m1 5h.1" stroke="#40527c" stroke-width="2.4" stroke-linecap="round"/>
-      <circle cx="95" cy="42" r="12" fill="#f5fbff" stroke="#a5c1e1"/>
-      <circle cx="94" cy="29" r="8.5" fill="#fff" stroke="#a5c1e1"/>
-      <circle cx="97" cy="15" r="3" fill="#ffce75"/>
-      <path d="M85 25q1-12 11-9 7 1 7 11Z" fill="#5a9a88"/>
-      <path d="m84 24 20 2-.6 3-20-2Z" fill="#83bea8"/>
-      <path d="M86 34q8 4 15 1l2 3-7 2-2 7-4-1 2-6-7-3Z" fill="#638bbd"/>
-      <path d="m94 30 7 2-7 .8Z" fill="#eb9a4c"/>
-      <path d="M90 29h.1m6 0h.1m3 16h.1m-2 4h.1" stroke="#40527c" stroke-width="2" stroke-linecap="round"/>
-      <path d="M9 17v8m-4-4h8m61-16v10m-5-5h10m37 29v8m-4-4h8" stroke="#8bb0dd" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
+  <div class="holiday-grove" aria-hidden="true">
+    <div class="holiday-tree icy">
+      <div class="tree-crown">
+        <img src="assets/holiday-tree.webp" alt="">
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+      </div>
+    </div>
+    <div class="holiday-tree">
+      <div class="tree-crown">
+        <img src="assets/holiday-tree.webp" alt="">
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+      </div>
+    </div>
+    <div class="holiday-snowmen">
+      <svg viewBox="0 0 125 59" fill="none">
+        <ellipse cx="66" cy="53" rx="54" ry="5" fill="#c5d9ee" opacity=".65"/>
+        <g class="snowman-arm"><path d="M54 33 63 25l3-5m-3 5 6 1" stroke="#86647a" stroke-width="1.6" stroke-linecap="round"/></g>
+        <g class="snowman-arm"><path d="M85 37l-8-8-4-1m4 1-1-4" stroke="#86647a" stroke-width="1.6" stroke-linecap="round"/></g>
+        <path d="M32 35 23 29l-5 1m5-1-2-5m83 10 9-7 2-5m-2 5 6 1" stroke="#86647a" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="44" cy="41" r="14" fill="#f5fbff" stroke="#a5c1e1"/>
+        <circle cx="43" cy="25" r="10" fill="#fff" stroke="#a5c1e1"/>
+        <path d="M30 18 55 20l.4-3-6-1 .7-9-12-1-1 9-7-.5Z" fill="#40527c"/>
+        <path d="m37 13 12 1-.2 2-12-1Z" fill="#e47e98"/>
+        <path d="M34 31q10 6 18 1l2 4q-5 3-9 3l4 7-4 2-5-10q-5-1-8-4Z" fill="#db6486"/>
+        <path d="m43 26 8 2-8 1Z" fill="#eb9a4c"/>
+        <path d="M39 24h.1m7 0h.1m-6 21h.1m1 5h.1" stroke="#40527c" stroke-width="2.4" stroke-linecap="round"/>
+        <circle cx="95" cy="42" r="12" fill="#f5fbff" stroke="#a5c1e1"/>
+        <circle cx="94" cy="29" r="8.5" fill="#fff" stroke="#a5c1e1"/>
+        <circle cx="97" cy="15" r="3" fill="#ffce75"/>
+        <path d="M85 25q1-12 11-9 7 1 7 11Z" fill="#5a9a88"/>
+        <path d="m84 24 20 2-.6 3-20-2Z" fill="#83bea8"/>
+        <path d="M86 34q8 4 15 1l2 3-7 2-2 7-4-1 2-6-7-3Z" fill="#638bbd"/>
+        <path d="m94 30 7 2-7 .8Z" fill="#eb9a4c"/>
+        <path d="M90 29h.1m6 0h.1m3 16h.1m-2 4h.1" stroke="#40527c" stroke-width="2" stroke-linecap="round"/>
+        <path d="M9 17v8m-4-4h8m61-16v10m-5-5h10m37 29v8m-4-4h8" stroke="#8bb0dd" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="holiday-tree rose">
+      <div class="tree-crown">
+        <img src="assets/holiday-tree.webp" alt="">
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+      </div>
+    </div>
+    <div class="holiday-tree mint">
+      <div class="tree-crown">
+        <img src="assets/holiday-tree.webp" alt="">
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+        <i class="tree-light"></i><i class="tree-light"></i><i class="tree-light"></i>
+      </div>
+    </div>
   </div>
 
   <div class="stats-row">
@@ -805,32 +883,37 @@
   function mountHolidayAnimation(){
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const snow = document.querySelector('.holiday-snow');
-    const tree = document.querySelector('.holiday-tree');
+    const trees = Array.from(document.querySelectorAll('.holiday-tree'));
+    let treeIndex = 0;
     let shakeTimer;
     let cleanupTimer;
 
     function shakeTree(){
       if (!document.hidden) {
+        const tree = trees[treeIndex];
+        treeIndex = (treeIndex + 1) % trees.length;
         tree.classList.add('is-shaking');
-        for (let index = 0; index < 24; index++) {
+        for (let index = 0; index < 14; index++) {
           const flake = document.createElement('i');
           flake.className = 'tree-snow';
           flake.style.left = `${20 + Math.random() * 60}%`;
           flake.style.top = `${20 + Math.random() * 57}%`;
           flake.style.setProperty('--size', `${2 + Math.random() * 5}px`);
           flake.style.setProperty('--phase', `${0.12 + Math.random() * 0.65}s`);
-          flake.style.setProperty('--drop', `${55 + Math.random() * 105}px`);
-          flake.style.setProperty('--drift', `${(Math.random() - .5) * 95}px`);
+          flake.style.setProperty('--drop', `${24 + Math.random() * 43}px`);
+          flake.style.setProperty('--drift', `${(Math.random() - .5) * 50}px`);
           tree.append(flake);
         }
         cleanupTimer = setTimeout(clearShake, 2400);
       }
-      shakeTimer = setTimeout(shakeTree, 18000 + Math.random() * 11000);
+      shakeTimer = setTimeout(shakeTree, 6500 + Math.random() * 3900);
     }
 
     function clearShake(){
-      tree.classList.remove('is-shaking');
-      tree.querySelectorAll('.tree-snow').forEach(flake => flake.remove());
+      trees.forEach(tree => {
+        tree.classList.remove('is-shaking');
+        tree.querySelectorAll('.tree-snow').forEach(flake => flake.remove());
+      });
     }
 
     function syncMotion(){
@@ -852,7 +935,7 @@
         flake.style.setProperty('--phase', `-${Math.random() * duration}s`);
         snow.append(flake);
       }
-      shakeTimer = setTimeout(shakeTree, 6500);
+      shakeTimer = setTimeout(shakeTree, 4000);
     }
 
     motion.addEventListener('change', syncMotion);
