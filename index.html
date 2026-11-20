@@ -1,65 +1,73 @@
 <title>Продажи PERTiX</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800&family=Onest:wght@500;600;700;800&display=swap">
 <style>
   :root{
-    /* PERTiX brand tokens — sampled from pertix.ru production CSS */
-    --bg:#f3f4f9;
+    --bg:#edf2fa;
+    --surface-2:#e9edf7;
+    --card-cool:#f0f3ff;
+    --card-mint:#eef8f5;
+    --card-rose:#fff2f4;
+    --icon-cool:#e0e7fb;
+    --icon-mint:#d9f0e9;
+    --icon-rose:#f8dee8;
     --surface:#ffffff;
-    --accent-light:#fff0f4;
-    --ink:#181924;
-    --muted:#5f6473;
-    --line:#e3e7f0;
-    --accent:#ff0037;
+    --ink:#20283e;
+    --muted:#53627b;
+    --line:#d9e2ef;
+    --accent:#a14064;
     --accent-ink:#ffffff;
-    --blue:#1f51ff;
-    --blue-light:#ecf0ff;
-    --dark:#1f1f1f;
-    --good:#1f8a4c; --good-bg:#e6f5ea;
-    --warn:#b8790a; --warn-bg:#fff8e8;
-    --bad:#ff0037;  --bad-bg:#fff0f4;
-    --gold:#e8a63c;
+    --blue:#4d5da3;
+    --good:#17694e; --good-bg:#e2f4eb;
+    --warn:#815521; --warn-bg:#fff0d8;
+    --bad:#a13658;  --bad-bg:#fce7ee;
     --radius-lg:22px;
     --radius-md:18px;
-    --shadow: 0 18px 50px rgba(16,24,80,.09);
+    --shadow:0 14px 38px rgba(50,67,111,.10), inset 0 1px 0 #fff;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#141414;
-      --surface:#1f1f1f;
-      --accent-light:rgba(255,0,55,.16);
-      --ink:#f4f4f5;
-      --muted:#9a9aa5;
-      --line:#333336;
-      --accent:#ff0037;
+      --bg:#141b2d;
+      --surface-2:#303d55;
+      --card-cool:#242e49;
+      --card-mint:#20363e;
+      --card-rose:#382c43;
+      --icon-cool:#36446d;
+      --icon-mint:#2c514e;
+      --icon-rose:#573650;
+      --surface:#1d273d;
+      --ink:#eff3fc;
+      --muted:#b6c3d9;
+      --line:#36445e;
+      --accent:#f09eb7;
       --accent-ink:#ffffff;
-      --blue:#5578ff;
-      --blue-light:rgba(31,81,255,.18);
-      --dark:#0d0d0d;
-      --good:#3fce82; --good-bg:rgba(63,206,130,.15);
-      --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-      --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
-      --gold:#f0b954;
-      --shadow: 0 18px 50px rgba(0,0,0,.5);
+      --blue:#adbaff;
+      --good:#94e2c0; --good-bg:#223f3d;
+      --warn:#f6cb85; --warn-bg:#46382c;
+      --bad:#ffb2c6;  --bad-bg:#482b40;
+      --shadow:0 16px 40px rgba(6,10,23,.26), inset 0 1px 0 #ffffff0d;
     }
   }
   :root[data-theme="dark"]{
-    --bg:#141414;
-    --surface:#1f1f1f;
-    --accent-light:rgba(255,0,55,.16);
-    --ink:#f4f4f5;
-    --muted:#9a9aa5;
-    --line:#333336;
-    --accent:#ff0037;
+    --bg:#141b2d;
+    --surface-2:#303d55;
+    --card-cool:#242e49;
+    --card-mint:#20363e;
+    --card-rose:#382c43;
+    --icon-cool:#36446d;
+    --icon-mint:#2c514e;
+    --icon-rose:#573650;
+    --surface:#1d273d;
+    --ink:#eff3fc;
+    --muted:#b6c3d9;
+    --line:#36445e;
+    --accent:#f09eb7;
     --accent-ink:#ffffff;
-    --blue:#5578ff;
-    --blue-light:rgba(31,81,255,.18);
-    --dark:#0d0d0d;
-    --good:#3fce82; --good-bg:rgba(63,206,130,.15);
-    --warn:#e3ab4c; --warn-bg:rgba(227,171,76,.15);
-    --bad:#ff2547;  --bad-bg:rgba(255,37,71,.18);
-    --gold:#f0b954;
-    --shadow: 0 18px 50px rgba(0,0,0,.5);
+    --blue:#adbaff;
+    --good:#94e2c0; --good-bg:#223f3d;
+    --warn:#f6cb85; --warn-bg:#46382c;
+    --bad:#ffb2c6;  --bad-bg:#482b40;
+    --shadow:0 16px 40px rgba(6,10,23,.26), inset 0 1px 0 #ffffff0d;
   }
 
   *{box-sizing:border-box;}
@@ -67,7 +75,7 @@
   body{
     background:var(--bg);
     color:var(--ink);
-    font-family:"Manrope",system-ui,-apple-system,Segoe UI,sans-serif;
+    font-family:"Golos Text",system-ui,-apple-system,Segoe UI,sans-serif;
     -webkit-font-smoothing:antialiased;
   }
   .num{ font-variant-numeric:tabular-nums; font-weight:600; }
@@ -91,18 +99,19 @@
   }
   .brand{display:flex; align-items:center; gap:12px;}
   .brand-mark{
-    width:42px;height:42px;border-radius:9px;
-    background:var(--accent);
+    width:46px;height:46px;border-radius:14px;
+    background:linear-gradient(145deg,#d46d8c,#9a486f 67%,#734576);
+    box-shadow:0 5px 14px #a1406433, inset 0 1px 0 #ffffff55;
     display:flex;align-items:center;justify-content:center;
     flex:none;
   }
   .brand-mark svg{width:24px;height:24px;color:var(--accent-ink);}
   .brand h1{
-    font-family:"Manrope",sans-serif;
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
     font-weight:800;
-    font-size:28px;
+    font-size:clamp(30px,4vw,46px);
     line-height:1;
-    letter-spacing:-.01em;
+    letter-spacing:-.055em;
     margin:0 0 5px;
     text-wrap:balance;
   }
@@ -120,10 +129,10 @@
   .month-badge{
     font-size:12px;
     font-weight:700;
-    letter-spacing:.05em;
-    text-transform:uppercase;
-    color:#fff;
-    background:radial-gradient(circle at 100% 0, rgba(255,0,55,.4), transparent 45%), var(--blue);
+    letter-spacing:.02em;
+    color:var(--blue);
+    background:linear-gradient(135deg,var(--surface),var(--icon-cool));
+    border:1px solid var(--line);
     padding:7px 13px;
     border-radius:999px;
   }
@@ -158,11 +167,15 @@
     gap:20px;
   }
   .dept-card{
-    background:var(--surface);
+    background:linear-gradient(145deg,var(--surface) 30%,var(--card-cool));
     border:1px solid var(--line);
     border-radius:var(--radius-lg);
     padding:20px 22px 8px;
     box-shadow:var(--shadow);
+  }
+
+  .dept-col:first-child .dept-card{
+    background:linear-gradient(145deg,var(--surface) 30%,var(--card-mint));
   }
 
   /* ---- mini stat tiles under the ГОСТ card ---- */
@@ -172,7 +185,7 @@
     gap:20px;
   }
   .mini-stat{
-    background:var(--surface);
+    background:linear-gradient(145deg,var(--surface) 30%,var(--card-cool));
     border:1px solid var(--line);
     border-radius:var(--radius-lg);
     box-shadow:var(--shadow);
@@ -183,6 +196,7 @@
     text-align:center;
     gap:8px;
   }
+  .mini-stat:first-child{background:linear-gradient(145deg,var(--surface) 25%,var(--card-mint));}
   .mini-stat .stat-icon{ margin-bottom:2px; }
   .mini-stat .stat-label{ margin:0; }
   .mini-stat .stat-number{ font-size:30px; }
@@ -192,7 +206,7 @@
     position:absolute;
     left:0; right:0; bottom:2px;
     text-align:center;
-    font-family:"Manrope",sans-serif;
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
     font-weight:800;
     font-size:22px;
     font-variant-numeric:tabular-nums;
@@ -208,10 +222,10 @@
     border-bottom:1px solid var(--line);
   }
   .dept-name{
-    font-family:"Manrope",sans-serif;
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
     font-weight:800;
-    font-size:20px;
-    letter-spacing:.01em;
+    font-size:24px;
+    letter-spacing:-.035em;
     margin:0 0 3px;
     color:var(--ink);
   }
@@ -229,6 +243,7 @@
     white-space:nowrap;
     font-variant-numeric:tabular-nums;
   }
+  .pct-pill{box-shadow:inset 0 0 0 1px color-mix(in srgb,currentColor 12%,transparent);}
   .pct-pill.small{font-size:12.5px; padding:4px 9px; border-radius:8px;}
   .pct-good{color:var(--good); background:var(--good-bg);}
   .pct-warn{color:var(--warn); background:var(--warn-bg);}
@@ -262,6 +277,7 @@
     position:absolute; left:0; top:0; bottom:0;
     border-radius:999px;
     overflow:hidden;
+    background:linear-gradient(90deg,color-mix(in srgb,var(--bar-color) 56%,var(--surface)),var(--bar-color));
   }
   .mgr-figures{
     margin-top:6px;
@@ -314,12 +330,12 @@
   }
   .mascot-inline{
     flex:0 0 auto;
-    width:124px;
+    width:clamp(36px,6vw,76px);
     margin-left:auto;
   }
-  .mascot-inline svg{ width:100%; height:auto; overflow:visible; }
+  .mascot-inline svg{display:block;width:100%;height:auto;color:var(--bad);}
   .stat-card{
-    background:var(--surface);
+    background:linear-gradient(145deg,var(--surface) 30%,var(--card-cool));
     border:1px solid var(--line);
     border-radius:var(--radius-lg);
     padding:20px 22px;
@@ -328,27 +344,38 @@
     align-items:center;
     gap:16px;
   }
+  .stat-card:nth-child(2){background:linear-gradient(145deg,var(--surface) 25%,var(--card-mint));}
+  .stat-card.warn-tile{background:linear-gradient(145deg,var(--surface) 25%,var(--card-rose));}
   .stat-icon{
     flex:none;
     width:56px;height:56px;
     border-radius:16px;
-    background:var(--accent-light);
+    background:linear-gradient(145deg,var(--surface),var(--icon-mint));
+    box-shadow:inset 0 0 0 1px var(--line);
     display:flex;align-items:center;justify-content:center;
-    color:var(--accent);
+    color:var(--good);
   }
   .stat-icon svg{width:30px;height:30px;}
-  .stat-icon.illustrated{ background:var(--blue-light); }
-  .stat-card.warn-tile .stat-icon{color:var(--bad);}
+  .stat-icon.illustrated{
+    color:var(--blue);
+    background:linear-gradient(145deg,var(--surface),var(--icon-cool));
+  }
+  .stat-card.warn-tile .stat-icon{
+    color:var(--bad);
+    background:linear-gradient(145deg,var(--surface),var(--icon-rose));
+  }
   .stat-label{
-    font-size:12.5px;
+    font-size:13px;
+    font-weight:500;
     color:var(--muted);
-    margin:0 0 2px;
+    margin:0 0 4px;
   }
   .stat-number{
-    font-family:"Manrope",sans-serif;
+    font-family:"Onest","Golos Text",system-ui,sans-serif;
     font-weight:800;
     font-size:36px;
     line-height:1;
+    letter-spacing:-.045em;
     font-variant-numeric:tabular-nums;
   }
   .stat-card.warn-tile .stat-number{ color:var(--bad); }
@@ -367,8 +394,8 @@
   }
   body{
     background:
-      radial-gradient(ellipse at 10% 0%,rgba(64,180,212,.17),transparent 36rem),
-      radial-gradient(ellipse at 95% 3%,rgba(108,114,230,.19),transparent 34rem),
+      radial-gradient(ellipse at 10% 0%,rgba(91,185,170,.16),transparent 36rem),
+      radial-gradient(ellipse at 95% 3%,rgba(124,123,223,.20),transparent 34rem),
       var(--bg);
   }
   .topband{
@@ -511,6 +538,11 @@
     .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;}
     .topbar .meta{grid-column:1/-1;}
     .holiday-tree{width:86px;height:110px;}
+    .topbar .meta{align-items:flex-start;}
+  }
+  @media (max-width:360px){
+    .stat-card{gap:12px;padding-inline:14px;}
+    .stat-icon{width:44px;height:44px;border-radius:13px;}
   }
   @media (prefers-reduced-motion:reduce){
     .garland-bulb{animation:none;}
@@ -546,20 +578,7 @@
     <div class="stat-card">
         <span class="holiday-charm" aria-hidden="true">🎁</span>
       <div class="stat-icon illustrated">
-        <svg viewBox="0 0 64 48" width="34" height="26">
-          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#c9975a"/>
-          <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#000" opacity=".06"/>
-          <path d="M35.5 17.5v8M31 21.5h9" stroke="#8a6338" stroke-width="1.3"/>
-          <path d="M39 18l2.4 2.6-4.8 0Z" fill="#8a6338"/>
-          <rect x="30" y="29" width="26" height="4.5" rx="1" fill="#f5a623"/>
-          <path d="M10 12 L30 25" stroke="#3a3a3a" stroke-width="3" stroke-linecap="round"/>
-          <rect x="27" y="24" width="5" height="9" rx="1.4" fill="#e8901a"/>
-          <circle cx="8" cy="10" r="2.6" fill="#3a3a3a"/>
-          <circle cx="34" cy="41" r="4" fill="#232323"/>
-          <circle cx="34" cy="41" r="1.6" fill="#5a5a5a"/>
-          <circle cx="54" cy="41" r="4" fill="#232323"/>
-          <circle cx="54" cy="41" r="1.6" fill="#5a5a5a"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h12v11H3zM15 9h3l3 4v4h-6M1 10h5M1 13h4"/><circle cx="7" cy="18" r="2" fill="var(--surface)"/><circle cx="18" cy="18" r="2" fill="var(--surface)"/></svg>
       </div>
       <div>
         <p class="stat-label">Отгрузок с начала года</p>
@@ -569,7 +588,7 @@
     <div class="stat-card">
         <span class="holiday-charm" aria-hidden="true">🔔</span>
       <div class="stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19.5a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 17.85a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.15 6.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H8.6a1.7 1.7 0 0 0 1.04-1.56V.5"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3ZM4 7.5l8 4.5 8-4.5M12 12v9M8 5.25l8 4.5v3"/><path d="m6.5 14 2 1.15"/></svg>
       </div>
       <div>
         <p class="stat-label">В производстве сейчас</p>
@@ -587,15 +606,7 @@
         <div class="stat-number num" id="lateShipmentsCount">—</div>
       </div>
       <div class="mascot-inline" aria-hidden="true">
-        <svg viewBox="0 0 100 90">
-          <polygon points="14,34 40,20 74,20 48,34" fill="#e0a468"/>
-          <polygon points="14,34 48,34 48,68 14,68" fill="#c9814a"/>
-          <polygon points="48,34 74,20 74,54 48,68" fill="#a86a3a"/>
-          <rect x="26" y="44" width="12" height="12" fill="#8a6338" opacity=".55"/>
-          <path d="M70 46 L92 84 L48 84 Z" fill="#f5b920" stroke="#2b2b2b" stroke-width="3.5" stroke-linejoin="round"/>
-          <rect x="68" y="58" width="4" height="13" rx="2" fill="#2b2b2b"/>
-          <circle cx="70" cy="76" r="2.4" fill="#2b2b2b"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16v12H4z" fill="var(--icon-rose)" stroke="none"/><path d="M4 8h16v11a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8ZM3 8l2-4h14l2 4M12 4v4M9 13h6M12 16.5h.01"/></svg>
       </div>
     </div>
   </div>
@@ -643,7 +654,7 @@
         <div class="mgr-row">
           <div class="mgr-name">${m.name}</div>
           <div>
-            <div class="mgr-bar"><div class="mgr-bar-fill" style="width:${width}%;background:var(--${t})"></div></div>
+            <div class="mgr-bar"><div class="mgr-bar-fill" style="width:${width}%;--bar-color:var(--${t})"></div></div>
             <div class="mgr-figures num"><span>план ${fmtMoney(m.plan)}</span><span>&rarr; факт ${fmtMoney(m.fact)}</span></div>
           </div>
           <div class="pct-cell">
@@ -678,11 +689,11 @@
         <svg viewBox="0 0 120 66" aria-hidden="true">
           <defs>
             <linearGradient id="${gradId}" gradientUnits="userSpaceOnUse" x1="10" y1="60" x2="110" y2="60">
-              <stop offset="0%" stop-color="#ef6a5f"/>
+              <stop offset="0%" stop-color="#d47591"/>
               <stop offset="27%" stop-color="#f0a860"/>
               <stop offset="50%" stop-color="#e8c467"/>
-              <stop offset="73%" stop-color="#b9cf6a"/>
-              <stop offset="100%" stop-color="#6fbf73"/>
+              <stop offset="73%" stop-color="#94c7aa"/>
+              <stop offset="100%" stop-color="#53ad90"/>
             </linearGradient>
           </defs>
           <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="${'url(#' + gradId + ')'}" stroke-width="10" stroke-linecap="round"/>
