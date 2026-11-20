@@ -365,6 +365,79 @@
     text-align:center;
     padding-top:6px;
   }
+  .dept-card, .stat-card, .mini-stat{
+    position:relative;
+    padding-top:32px;
+    overflow:hidden;
+  }
+  .dept-card::before, .stat-card::before, .mini-stat::before{
+    content:"";
+    position:absolute;
+    inset:0 0 auto;
+    height:16px;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse at 10px 7px,#f07374 0 2.5px,transparent 3.5px),
+      radial-gradient(ellipse at 26px 11px,#f6bf58 0 2.5px,transparent 3.5px),
+      radial-gradient(ellipse at 42px 7px,#57c6a2 0 2.5px,transparent 3.5px),
+      radial-gradient(ellipse at 26px -11px,transparent 0 20px,#468b72 21px 22px,transparent 23px);
+    background-size:52px 16px;
+  }
+  .holiday-charm{
+    position:absolute;
+    top:12px;
+    right:15px;
+    font-size:16px;
+    line-height:1;
+    pointer-events:none;
+  }
+
+  .holiday-tree{
+    position:relative;
+    flex:none;
+    width:56px;
+    height:72px;
+    margin-inline:auto 0;
+  }
+  .holiday-tree::before{
+    content:"";
+    position:absolute;
+    inset:10px 0 7px;
+    clip-path:polygon(50% 0,71% 34%,63% 34%,84% 66%,72% 66%,100% 100%,0 100%,28% 66%,16% 66%,37% 34%,29% 34%);
+    background:
+      radial-gradient(circle at 50% 25%,#ffd578 0 2px,transparent 3px),
+      radial-gradient(circle at 39% 53%,#f47b7d 0 3px,transparent 4px),
+      radial-gradient(circle at 64% 61%,#ffd578 0 3px,transparent 4px),
+      radial-gradient(circle at 25% 88%,#ffd578 0 3px,transparent 4px),
+      radial-gradient(circle at 52% 84%,#f47b7d 0 3px,transparent 4px),
+      radial-gradient(circle at 79% 90%,#e5f2ff 0 3px,transparent 4px),
+      linear-gradient(120deg,#27865e,#124733);
+  }
+  .holiday-tree::after{
+    content:"";
+    position:absolute;
+    bottom:0;
+    left:24px;
+    width:8px;
+    height:8px;
+    border-radius:0 0 2px 2px;
+    background:#a26b43;
+  }
+  .holiday-tree span{
+    position:absolute;
+    top:-3px;
+    left:50%;
+    transform:translateX(-50%);
+    color:#e9ab36;
+    font-size:22px;
+    line-height:1;
+  }
+  @media (max-width:520px){
+    .topbar{display:grid;grid-template-columns:minmax(0,1fr) auto;}
+    .topbar .meta{grid-column:1/-1;}
+    .holiday-tree{width:46px;height:62px;}
+    .holiday-tree::after{left:19px;}
+  }
 </style>
 
 <div class="topband"></div>
@@ -379,6 +452,7 @@
         <p class="tagline">Продажи · нарастающим итогом с начала года</p>
       </div>
     </div>
+    <div class="holiday-tree" aria-hidden="true"><span>★</span></div>
     <div class="meta">
       <div class="month-badge" id="monthBadge">—</div>
       <div class="updated" id="updated"><span class="dot"></span><span id="updatedText">—</span></div>
@@ -390,6 +464,7 @@
   <div class="stats-row">
   <div class="stats">
     <div class="stat-card">
+        <span class="holiday-charm" aria-hidden="true">🎁</span>
       <div class="stat-icon illustrated">
         <svg viewBox="0 0 64 48" width="34" height="26">
           <rect x="27" y="14" width="17" height="15" rx="1.2" fill="#c9975a"/>
@@ -412,6 +487,7 @@
       </div>
     </div>
     <div class="stat-card">
+        <span class="holiday-charm" aria-hidden="true">🔔</span>
       <div class="stat-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 13.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.04 1.56V19.5a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.96 17.85a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.04H2.5a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.15 6.96a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H8.6a1.7 1.7 0 0 0 1.04-1.56V.5"/></svg>
       </div>
@@ -422,6 +498,7 @@
       </div>
     </div>
     <div class="stat-card warn-tile">
+        <span class="holiday-charm" aria-hidden="true">🧦</span>
       <div class="stat-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v6"/><circle cx="12" cy="16.3" r="1" fill="currentColor" stroke="none"/></svg>
       </div>
@@ -498,6 +575,7 @@
 
     return `
       <section class="dept-card">
+        <span class="holiday-charm" aria-hidden="true">${dept.name === 'ГОСТ' ? '🧦' : '🔔'}</span>
         <div class="dept-head">
           <div>
             <h2 class="dept-name">${dept.name}</h2>
@@ -546,6 +624,7 @@
     return `
       <div class="mini-stats">
         <div class="mini-stat">
+        <span class="holiday-charm" aria-hidden="true">🎁</span>
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 6a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v4.5a2 2 0 0 1-2 2H7.2L4 15v-2.5H4a2 2 0 0 1-2-2V6Z"/>
@@ -558,6 +637,7 @@
           <div class="stat-number num">${fmtInt(lg.totalInquiries)}</div>
         </div>
         <div class="mini-stat">
+        <span class="holiday-charm" aria-hidden="true">🔔</span>
           <p class="stat-label">Конверсия лидов</p>
           ${gaugeSVG(lg.conversionPct)}
         </div>
