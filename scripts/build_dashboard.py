@@ -223,7 +223,7 @@ def fetch_gost_year_cell(cell):
 
 
 def fetch_total_inquiries():
-    value = re.sub(r"\s+", "", fetch_gost_year_cell("Z4"))
+    value = re.sub(r"\s+", "", fetch_gost_year_cell("Z3"))
     return int(value) if re.fullmatch(r"[0-9]+", value) else None
 
 
