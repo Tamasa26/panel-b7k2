@@ -181,8 +181,12 @@
   /* ---- mini stat tiles under the ГОСТ card ---- */
   .mini-stats{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(3,minmax(0,1fr));
     gap:20px;
+  }
+  @media (max-width:520px){
+    .mini-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+    .mini-stat:first-child{grid-column:1/-1;}
   }
   .mini-stat{
     background:linear-gradient(145deg,var(--surface) 30%,var(--card-cool));
@@ -728,13 +732,13 @@
 </div>
 
 <script>
-  const DATA = {"updatedAt": "2026-11-26T02:46:02.979222+03:00", "currentMonth": "Ноябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 57000000, "fact": 57973144, "pct": 101.7}, {"name": "Филаретова", "plan": 41355000, "fact": 44648889, "pct": 108.0}, {"name": "Муканян", "plan": 2000000, "fact": 3182641, "pct": 159.1}]}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 78775000, "fact": 51514930, "pct": 65.4}, {"name": "Роганин", "plan": 69500000, "fact": 12943252, "pct": 18.6}, {"name": "Маркова", "plan": 69500000, "fact": 53242840, "pct": 76.6}, {"name": "Малашкин", "plan": 69500000, "fact": 92168518, "pct": 132.6}, {"name": "Извекова", "plan": 29700000, "fact": 51378006, "pct": 173.0}, {"name": "Ерицян", "plan": 29700000, "fact": 21743791, "pct": 73.2}]}], "shipments": {"count": 729}, "lateShipments": {"count": 65}, "production": {"count": 10, "sum": 8216729}, "leadGen": {"totalInquiries": 709, "conversionPct": 33.9, "month": "Октябрь"}, "sourceUpdatedAt": "2026-11-25T14:25:41+03:00"};
+  const DATA = {"updatedAt": "2026-11-26T16:22:37.516911+03:00", "currentMonth": "Ноябрь", "departments": [{"name": "ГОСТ", "managers": [{"name": "Угольников", "plan": 57000000, "fact": 57973144, "pct": 101.7}, {"name": "Филаретова", "plan": 41355000, "fact": 44648889, "pct": 108.0}, {"name": "Муканян", "plan": 2000000, "fact": 3182641, "pct": 159.1}], "totals": {"plan": 155355000, "fact": 135041756}}, {"name": "Проектный", "managers": [{"name": "Якунин", "plan": 78775000, "fact": 51514930, "pct": 65.4}, {"name": "Роганин", "plan": 69500000, "fact": 12943252, "pct": 18.6}, {"name": "Маркова", "plan": 69500000, "fact": 53242840, "pct": 76.6}, {"name": "Малашкин", "plan": 69500000, "fact": 92168518, "pct": 132.6}, {"name": "Извекова", "plan": 29700000, "fact": 51378006, "pct": 173.0}, {"name": "Ерицян", "plan": 29700000, "fact": 25537464, "pct": 86.0}]}], "shipments": {"count": 729}, "lateShipments": {"count": 65}, "production": {"count": 10, "sum": 8216729}, "leadGen": {"totalInquiries": null, "conversionPct": 33.9}, "applicationConversionPct": 26.47, "sourceUpdatedAt": "2026-11-26T15:28:03+03:00"};
 
   function fmtMoney(n){
     return new Intl.NumberFormat('ru-RU', {maximumFractionDigits:0}).format(Math.round(n||0)) + ' ₽';
   }
-  function fmtPct(p){
-    return p.toLocaleString('ru-RU', {minimumFractionDigits:1, maximumFractionDigits:1}) + '%';
+  function fmtPct(p, digits = 1){
+    return p.toLocaleString('ru-RU', {minimumFractionDigits:digits, maximumFractionDigits:digits}) + '%';
   }
   function fmtInt(n){
     return new Intl.NumberFormat('ru-RU').format(Math.round(n||0));
@@ -755,8 +759,8 @@
   }
 
   function renderDept(dept){
-    const totalPlan = dept.managers.reduce((s,m)=>s+m.plan,0);
-    const totalFact = dept.managers.reduce((s,m)=>s+m.fact,0);
+    const totalPlan = dept.totals?.plan ?? dept.managers.reduce((s,m)=>s+m.plan,0);
+    const totalFact = dept.totals?.fact ?? dept.managers.reduce((s,m)=>s+m.fact,0);
     const totalPct = totalPlan ? (totalFact/totalPlan*100) : 0;
     const tTier = tier(totalPct);
 
@@ -792,7 +796,7 @@
   }
 
   let gaugeSeq = 0;
-  function gaugeSVG(valuePct){
+  function gaugeSVG(valuePct, digits = 1){
     const max = 45;
     const clamped = Math.max(0, Math.min(valuePct, max));
     const deg = (clamped / max) * 180 - 90;
@@ -810,21 +814,15 @@
             </linearGradient>
           </defs>
           <path d="M10,60 A50,50 0 0,1 110,60" fill="none" stroke="${'url(#' + gradId + ')'}" stroke-width="10" stroke-linecap="round"/>
-          <line class="gauge-needle" x1="60" y1="60" x2="60" y2="19" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" transform="rotate(${deg} 60 60)"/>
+          ${valuePct == null ? '' : `<line class="gauge-needle" x1="60" y1="60" x2="60" y2="19" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" transform="rotate(${deg} 60 60)"/>`}
           <circle cx="60" cy="60" r="5" fill="var(--ink)"/>
         </svg>
-        <div class="gauge-value num">${fmtPct(valuePct)}</div>
+        <div class="gauge-value num">${valuePct == null ? '—' : fmtPct(valuePct, digits)}</div>
       </div>`;
   }
 
-  const MONTH_SHORT = {
-    'Январь':'янв', 'Февраль':'февр', 'Март':'март', 'Апрель':'апр',
-    'Май':'май', 'Июнь':'июнь', 'Июль':'июль', 'Август':'авг',
-    'Сентябрь':'сент', 'Октябрь':'окт', 'Ноябрь':'нояб', 'Декабрь':'дек'
-  };
-
   function renderMiniStats(data){
-    const lg = data.leadGen || {totalInquiries: 0, conversionPct: 0};
+    const lg = data.leadGen || {totalInquiries: null, conversionPct: 0};
     return `
       <div class="mini-stats">
         <div class="mini-stat">
@@ -836,12 +834,16 @@
               <path d="M13 11.3v-3.2l1.5-2.1c.25-.35.8-.25.9.15l.15.85h1.6c.55 0 .95.5.8 1.05l-.5 2.05a.9.9 0 0 1-.85.65H13Z" fill="currentColor" stroke="none"/>
             </svg>
           </div>
-          <p class="stat-label">Всего обращений${lg.month && MONTH_SHORT[lg.month] ? ' (' + MONTH_SHORT[lg.month] + ')' : ''}</p>
-          <div class="stat-number num">${fmtInt(lg.totalInquiries)}</div>
+          <p class="stat-label">Всего обращений</p>
+          <div class="stat-number num">${lg.totalInquiries == null ? '—' : fmtInt(lg.totalInquiries)}</div>
         </div>
         <div class="mini-stat">
           <p class="stat-label">Конверсия лидов</p>
           ${gaugeSVG(lg.conversionPct)}
+        </div>
+        <div class="mini-stat">
+          <p class="stat-label">Конверсия заявок</p>
+          ${gaugeSVG(data.applicationConversionPct, 2)}
         </div>
       </div>`;
   }
