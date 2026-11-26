@@ -491,16 +491,15 @@
     width:100%;
     filter:drop-shadow(0 4px 4px #3955822e);
   }
-  .snowman-arm{
-    transform-box:view-box;
-    animation:holiday-spar 24s ease-in-out infinite;
-  }
+  .snowman-arm{transform-box:view-box;}
+  .holiday-snowmen.is-sparring .snowman-arm{animation:holiday-spar 2.4s ease-in-out both;}
   .snowman-arm:first-of-type{transform-origin:54px 33px;--swing:42deg;}
-  .snowman-arm:nth-of-type(2){transform-origin:85px 37px;--swing:-42deg;animation-delay:.22s;}
+  .snowman-arm:nth-of-type(2){transform-origin:85px 37px;--swing:-42deg;}
+  .holiday-snowmen.is-sparring .snowman-arm:nth-of-type(2){animation-delay:.22s;}
   @keyframes holiday-spar{
-    0%,25%,35%,100%{transform:rotate(0);}
-    27%,31%,33%{transform:rotate(var(--swing));}
-    29%{transform:rotate(calc(0deg - var(--swing) / 3));}
+    0%,100%{transform:rotate(0);}
+    20%,51%,78%{transform:rotate(var(--swing));}
+    35%,64%{transform:rotate(calc(0deg - var(--swing) / 3));}
   }
 
   .holiday-tree{
@@ -610,7 +609,7 @@
   @media (prefers-reduced-motion:reduce){
     .garland-bulb{animation:none;}
     .holiday-snow,.tree-snow{display:none;}
-    .holiday-tree.is-shaking .tree-crown,.tree-light,.snowman-arm{animation:none;}
+    .holiday-tree.is-shaking .tree-crown,.tree-light,.holiday-snowmen.is-sparring .snowman-arm{animation:none;}
   }
 </style>
 
@@ -983,11 +982,28 @@
   mountHolidayAnimation();
   if (DATA) setInterval(() => markStale(new Date(DATA.updatedAt)), 60000);
 
-  // The page itself is a static file — an open tab never sees a new
-  // publish on its own. Reload from the network every 5 minutes (with a
-  // cache-busting query so a CDN/browser cache can't serve the old file)
-  // so a screen left open all day picks up each hourly update.
-  setInterval(() => {
+  // Give the snowmen time to finish before fetching the next static page.
+  const snowmen = document.querySelector('.holiday-snowmen');
+  const sparInterval = 5 * 60 * 1000;
+  const sparDuration = 2800;
+
+  function refreshDashboard(){
     window.location.href = window.location.pathname + '?t=' + Date.now();
-  }, 5 * 60 * 1000);
+  }
+
+  if (location.protocol.startsWith('http')) {
+    setTimeout(() => {
+      if (document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        refreshDashboard();
+        return;
+      }
+      snowmen.classList.add('is-sparring');
+      setTimeout(refreshDashboard, sparDuration);
+    }, sparInterval);
+  } else {
+    setInterval(() => {
+      snowmen.classList.add('is-sparring');
+      setTimeout(() => snowmen.classList.remove('is-sparring'), sparDuration);
+    }, sparInterval);
+  }
 </script>
