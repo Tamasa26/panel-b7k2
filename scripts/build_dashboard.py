@@ -37,6 +37,8 @@ REPO_ROOT = HERE.parent
 BITRIX_WEBHOOK = os.environ["BITRIX_WEBHOOK"]
 BITRIX_FILE_ID = "453924"  # "1. План-факт (2026).xlsx" on Disk
 BITRIX_SHEET_NAME = "План-факт"
+GOST_PLAN_COLUMN = 33  # AG
+GOST_FACT_COLUMN = 34  # AH
 
 MONTHS_RU = [
     "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь",
@@ -57,6 +59,7 @@ PROD_DATA_START_ROW = 19  # 1-indexed row where the per-date shipment table begi
 # ---- Google Sheets ("ГОСТ отдел", monthly tab: lead-gen) -----------------
 
 LEADGEN_SHEET_ID = "1J7wM6L86ns3B64QGmi0wvMWLHiKDJXSIHdT0CG0Exs0"
+GOST_YEAR_COPY_GID = "1717722585"  # "2026 копия" tab
 LEADGEN_GID = "197232306"  # "Октябрь" tab — update this gid when the next month's tab replaces it
 
 
@@ -132,7 +135,15 @@ def fetch_bitrix_plan_fact(current_month_index):
                 "fact": round(fact_sum),
                 "pct": round(pct, 1),
             })
-        result[dept["name"]] = dept_out
+        result[dept["name"]] = {"name": dept["name"], "managers": dept_out}
+
+    # The workbook provides department-wide figures in AG and AH.
+    result["ГОСТ"]["totals"] = {
+        "plan": round(sum(num(ws.cell(row=month_row[m], column=GOST_PLAN_COLUMN).value)
+                          for m in months_to_sum)),
+        "fact": round(sum(num(ws.cell(row=month_row[m], column=GOST_FACT_COLUMN).value)
+                          for m in months_to_sum)),
+    }
 
     return result, updated_time
 
@@ -185,15 +196,6 @@ def fetch_leadgen():
                 return r[6].strip()
         return None
 
-    # The tab's own month name sits in row 1 (e.g. "Октябрь"); read it so the
-    # dashboard label always matches whichever tab the gid points at.
-    tab_month = None
-    for cell in rows[0] if rows else []:
-        if cell.strip().capitalize() in MONTHS_RU:
-            tab_month = cell.strip().capitalize()
-            break
-
-    total_raw = first_match("Общее кол-во входящих обращений")
     conv_raw = first_match("Конверсия вход/квал лид")
 
     conv_pct = 0.0
@@ -205,10 +207,32 @@ def fetch_leadgen():
             conv_pct = 0.0
 
     return {
-        "totalInquiries": int(num(total_raw)) if total_raw else 0,
+        "totalInquiries": fetch_total_inquiries(),
         "conversionPct": round(conv_pct, 1),
-        "month": tab_month,
     }
+
+
+def fetch_gost_year_cell(cell):
+    url = (
+        f"https://docs.google.com/spreadsheets/d/{LEADGEN_SHEET_ID}/export"
+        f"?format=csv&gid={GOST_YEAR_COPY_GID}&range={cell}"
+    )
+    raw = http_get_bytes(url).decode("utf-8-sig")
+    row = next(csv.reader(io.StringIO(raw)), [])
+    return row[0].strip() if row else ""
+
+
+def fetch_total_inquiries():
+    value = re.sub(r"\s+", "", fetch_gost_year_cell("Z4"))
+    return int(value) if re.fullmatch(r"[0-9]+", value) else None
+
+
+def fetch_application_conversion():
+    try:
+        value = float(fetch_gost_year_cell("F6").removesuffix("%").replace(",", "."))
+    except ValueError:
+        return None
+    return value if 0 <= value <= 100 else None
 
 
 def build_data():
@@ -222,14 +246,12 @@ def build_data():
     return {
         "updatedAt": moscow_now.isoformat(),
         "currentMonth": MONTHS_RU[current_month_index],
-        "departments": [
-            {"name": dept["name"], "managers": plan_fact[dept["name"]]}
-            for dept in DEPARTMENTS
-        ],
+        "departments": list(plan_fact.values()),
         "shipments": prod["shipments"],
         "lateShipments": prod["lateShipments"],
         "production": prod["production"],
         "leadGen": leadgen,
+        "applicationConversionPct": fetch_application_conversion(),
         "sourceUpdatedAt": bitrix_updated,
     }
 
